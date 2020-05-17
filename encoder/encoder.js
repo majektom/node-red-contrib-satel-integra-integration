@@ -1,12 +1,12 @@
 const protocol = require("satel-integra-integration-protocol");
 
-module.exports = function(RED) {
+module.exports = function (RED) {
   function Encoder(config) {
     RED.nodes.createNode(this, config);
     var node = this;
-    node.on('input', function(msg) {
+    node.on("input", function (msg) {
       if (!msg.topic) {
-        return;    
+        return;
       }
       let cmd;
       if (msg.topic == "new_data") {
@@ -25,4 +25,4 @@ module.exports = function(RED) {
     });
   }
   RED.nodes.registerType("satel-integra-encoder", Encoder);
-}
+};
