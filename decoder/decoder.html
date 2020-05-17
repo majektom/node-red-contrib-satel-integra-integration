@@ -1,0 +1,59 @@
+<script type="text/javascript">
+  RED.nodes.registerType('satel-integra-decoder', {
+    category: 'function',
+    color: '#c0c0c0',
+    defaults: {
+      name: { value: "Satel Integra decoder" }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "function.png",
+    label: function() {
+      return this.name || "Satel Integra decoder";
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="satel-integra-decoder">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="satel-integra-decoder">
+  <p>
+    A node that decodes protocol frames. A frame should be provided to the node as a buffer of
+    bytes contained in the message payload. When a frame has been successfully decoded, the node
+    sends out a message which contains the type of decoded message in <b>topic</b> field and
+    the content of the message in the <b>payload</b> filed.
+  </p>
+  <p>
+    The supported message types are:
+    <ul>
+      <li>
+        <dfn>New data answer</dfn> - the output message topic is set to <b>new_data</b> and the
+        message payload contains array of flags conveying information whether the data related to
+        particular commands has changed. See the
+        <a href=https://www.satel.pl/en/download/instrukcje/ethm1_plus_en_d028477e.pdf>
+          protocol documentation
+        </a> on how to relate a flag to its command.
+      </li>
+      <li>
+        <dfn>Outputs state answer</dfn> - the output message topic is set to <b>outputs_state</b>
+        and the message payload contains array of flags conveying state of all outputs. The index of
+        a flag corresponds to the index of an output.
+      </li>
+      <li>
+        <dfn>Zones tamper answer</dfn> - the message topic is set to <b>zones_tamper</b> and the
+        message payload contains array of flags conveying tamper state of all inputs. The index of a
+        flag corresponds to the index of an input.
+      </li>
+      <li>
+        <dfn>Zones violation answer</dfn> - the output message topic is set to
+        <b>zones_violation</b> and the message payload contains array of flags conveying violation
+        state of all inputs. The index of a flag corresponds to the index of an input.
+      </li>
+    </ul>
+  </p>
+</script>

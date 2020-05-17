@@ -1,0 +1,50 @@
+<script type="text/javascript">
+  RED.nodes.registerType('satel-integra-encoder', {
+    category: 'function',
+    color: '#c0c0c0',
+    defaults: {
+      name: { value: "Satel Integra encoder" }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "function.png",
+    label: function() {
+      return this.name || "Satel Integra encoder";
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="satel-integra-encoder">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="satel-integra-encoder">
+  <p>
+    A node that encodes protocol frames and sends them out as a buffer of bytes stored in the
+    message payload. The type of message to encode should be stored in the <b>topic</b> filed of the
+    input message.
+  </p>
+  <p>
+    The supported message types are:
+    <ul>
+      <li>
+        <dfn>New data command</dfn> - the topic of the input message must be set to <b>new_data</b>
+      </li>
+      <li>
+        <dfn>Outputs state command</dfn> - the topic of the input message must be set to
+        <b>outputs_state</b>
+      </li>
+      <li>
+        <dfn>Zones tamper command</dfn> - the topic of the input message must be set to
+        <b>zones_tamper</b>
+      </li>
+      <li>
+        <dfn>Zones violation command</dfn> - the topic of the input message must be set to
+        <b>zones_violation</b>
+      </li>
+    </ul>
+  </p>
+</script>

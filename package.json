@@ -1,0 +1,30 @@
+{
+  "name": "red-contrib-satel-integra-integration",
+  "version": "0.1.0",
+  "description": "Node-red nodes facilitating integration with Satel Integra alarm/home automation system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/majektom/node-red-contrib-satel-integra-integration"
+  },
+  "node-red": {
+    "nodes": {
+      "decoder": "decoder/decoder.js",
+      "encoder": "encoder/encoder.js"
+    }
+  },
+  "keywords": [
+    "satel",
+    "integra",
+    "protocol",
+    "node-red"
+  ],
+  "author": "Tomasz Maj",
+  "license": "MIT",
+  "dependencies": {
+    "satel-integra-integration-protocol": "^0.2.0"
+  }
+}
