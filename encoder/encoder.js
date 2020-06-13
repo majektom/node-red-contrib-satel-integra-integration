@@ -3,9 +3,15 @@ const protocol = require("satel-integra-integration-protocol");
 module.exports = function (RED) {
   function Encoder(config) {
     RED.nodes.createNode(this, config);
-    var node = this;
-    node.on("input", function (msg) {
+    const node = this;
+    node.on("input", function (msg, send, done) {
       if (!msg.topic) {
+        const err = "message without topic";
+        if (done) {
+          done(err);
+        } else {
+          node.error(err, msg);
+        }
         return;
       }
       let cmd;
@@ -18,10 +24,23 @@ module.exports = function (RED) {
       } else if (msg.topic == "zones_violation") {
         cmd = new protocol.ZonesViolationCommand();
       } else {
+        const err = "unsupported message topic: '" + msg.topic + "'";
+        if (done) {
+          done(err);
+        } else {
+          node.error(err, msg);
+        }
         return;
       }
       msg.payload = cmd.encode();
-      node.send(msg);
+      if (send) {
+        send(msg);
+      } else {
+        node.send(msg);
+      }
+      if (done) {
+        done();
+      }
     });
   }
   RED.nodes.registerType("satel-integra-encoder", Encoder);

@@ -3,13 +3,18 @@ const protocol = require("satel-integra-integration-protocol");
 module.exports = function (RED) {
   function Decoder(config) {
     RED.nodes.createNode(this, config);
-    var node = this;
-    node.on("input", function (msg) {
-      if (!msg.payload instanceof ArrayBuffer) {
+    const node = this;
+    node.on("input", function (msg, send, done) {
+      if (!(msg.payload instanceof Buffer)) {
+        const err = "message doesn't have a buffer in the 'payload' field";
+        if (done) {
+          done(err);
+        } else {
+          node.error(err, msg);
+        }
         return;
       }
       const decoded_msg = protocol.decodeMessage(msg.payload);
-      msg = new Object();
       if (decoded_msg instanceof protocol.NewDataAnswer) {
         msg.topic = "new_data";
         msg.payload = decoded_msg.flags;
@@ -23,9 +28,22 @@ module.exports = function (RED) {
         msg.topic = "zones_violation";
         msg.payload = decoded_msg.flags;
       } else {
+        const err = "message decoding failed, payload: " + msg.payload;
+        if (done) {
+          done(err);
+        } else {
+          node.error(err, msg);
+        }
         return;
       }
-      node.send(msg);
+      if (send) {
+        send(msg);
+      } else {
+        node.send(msg);
+      }
+      if (done) {
+        done();
+      }
     });
   }
   RED.nodes.registerType("satel-integra-decoder", Decoder);

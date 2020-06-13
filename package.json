@@ -4,7 +4,7 @@
   "description": "Node-red nodes facilitating integration with Satel Integra alarm/home automation system",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha '{,!(node_modules)/**}/*.test.js'",
     "format:fix": "prettier --write \"**/*.@(ts|js|json|md|html)\"",
     "format:validate": "prettier --list-different \"**/*.@(ts|js|json|md|html)\""
   },
@@ -30,6 +30,10 @@
     "satel-integra-integration-protocol": "^0.2.0"
   },
   "devDependencies": {
-    "prettier": "2.0.5"
+    "mocha": "^7.1.2",
+    "node-red": "^1.0.6",
+    "node-red-node-test-helper": "^0.2.3",
+    "prettier": "2.0.5",
+    "sinon": "^9.0.2"
   }
 }
