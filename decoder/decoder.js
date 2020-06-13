@@ -7,6 +7,7 @@ module.exports = function (RED) {
     node.on("input", function (msg, send, done) {
       if (!(msg.payload instanceof Buffer)) {
         const err = "message doesn't have a buffer in the 'payload' field";
+        /* istanbul ignore else: the else path can be reached with old node-red versions only */
         if (done) {
           done(err);
         } else {
@@ -29,6 +30,7 @@ module.exports = function (RED) {
         msg.payload = decoded_msg.flags;
       } else {
         const err = "message decoding failed, payload: " + msg.payload;
+        /* istanbul ignore else: the else path can be reached with old node-red versions only */
         if (done) {
           done(err);
         } else {
@@ -36,11 +38,13 @@ module.exports = function (RED) {
         }
         return;
       }
+      /* istanbul ignore else: the else path can be reached with old node-red versions only */
       if (send) {
         send(msg);
       } else {
         node.send(msg);
       }
+      /* istanbul ignore else: the else path can be reached with old node-red versions only */
       if (done) {
         done();
       }
