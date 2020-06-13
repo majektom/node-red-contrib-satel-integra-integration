@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha '{,!(node_modules)/**}/*.test.js'",
-    "format:fix": "prettier --write \"**/*.@(ts|js|json|md|html)\"",
-    "format:validate": "prettier --list-different \"**/*.@(ts|js|json|md|html)\""
+    "format:fix": "prettier --write '{,!(coverage)/}**/*.@(ts|js|json|md|html)'",
+    "format:validate": "prettier --list-different '{,!(coverage)/}**/*.@(ts|js|json|md|html)'"
   },
   "repository": {
     "type": "git",
