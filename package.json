@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha '{,!(node_modules)/**}/*.test.js'",
-    "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha '{,!(node_modules)/**}/*.test.js'",
+    "cover": "node_modules/istanbul/lib/cli.js cover -x '**/*.test.js' node_modules/mocha/bin/_mocha '{,!(node_modules)/**}/*.test.js'",
     "format:fix": "prettier --write '{,!(coverage)/}**/*.@(ts|js|json|md|html)'",
     "format:validate": "prettier --list-different '{,!(coverage)/}**/*.@(ts|js|json|md|html)'"
   },
