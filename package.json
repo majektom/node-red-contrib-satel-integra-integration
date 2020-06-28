@@ -1,5 +1,5 @@
 {
-  "name": "red-contrib-satel-integra-integration",
+  "name": "node-red-contrib-satel-integra-integration",
   "version": "0.1.0",
   "description": "Node-red nodes facilitating integration with Satel Integra alarm/home automation system",
   "main": "index.js",
