@@ -20,10 +20,10 @@
     }
   },
   "keywords": [
+    "node-red",
     "satel",
     "integra",
-    "protocol",
-    "node-red"
+    "protocol"
   ],
   "author": "Tomasz Maj",
   "license": "MIT",
