@@ -29,7 +29,8 @@ module.exports = function (RED) {
         msg.topic = "zones_violation";
         msg.payload = decoded_msg.flags;
       } else {
-        const err = "message decoding failed, payload: " + msg.payload;
+        const err =
+          "message decoding failed, payload: " + msg.payload.toString("hex");
         /* istanbul ignore else: the else path can be reached with old node-red versions only */
         if (done) {
           done(err);
