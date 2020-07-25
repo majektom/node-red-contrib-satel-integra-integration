@@ -24,26 +24,79 @@
 <script type="text/html" data-help-name="satel-integra-encoder">
   <p>
     A node that encodes protocol frames and sends them out as a buffer of bytes stored in the
-    message payload. The type of message to encode should be stored in the <b>topic</b> filed of the
-    input message.
+    message payload. The type of message to encode should be stored in the <code>msg.topic</code>
+    property.
   </p>
   <p>
     The supported message types are:
     <ul>
       <li>
-        <dfn>New data command</dfn> - the topic of the input message must be set to <b>new_data</b>
+        <dfn>New data command</dfn> - <code>msg.topic</code> must be set to <b>new_data</b>
       </li>
       <li>
-        <dfn>Outputs state command</dfn> - the topic of the input message must be set to
+        <dfn>Outputs state command</dfn> - <code>msg.topic</code> must be set to
         <b>outputs_state</b>
       </li>
       <li>
-        <dfn>Zones tamper command</dfn> - the topic of the input message must be set to
-        <b>zones_tamper</b>
+        <dfn>Zones tamper command</dfn> - <code>msg.topic</code> must be set to <b>zones_tamper</b>
       </li>
       <li>
-        <dfn>Zones violation command</dfn> - the topic of the input message must be set to
+        <dfn>Zones violation command</dfn> - <code>msg.topic</code> must be set to
         <b>zones_violation</b>
+      </li>
+      <li>
+        <dfn>Outputs on command</dfn> - <code>msg.topic</code> must be set to <b>outputs_on</b>.
+        Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.prefixAndUserCode</code> - 16 character long string containing (optional)
+            prefix followed by user code. If length of prefix + length of user code is less than
+            16 characters, remaining characters should be filled with <i>'f'</i>. E.g. for
+            prefix: <i>"0346"</i> and user code: <i>"7696"</i>, the property value should be
+            <i>"03467696ffffffff"</i>.
+          </li>
+          <li>
+            <code>msg.outputs</code> - 128 or 256 elements long boolean array. Index of an element
+            is equal to index of an output. Outputs for which their corresponding array element is
+            set to <i>true</i>, will be turned on. The other outputs will remain unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Outputs off command</dfn> - <code>msg.topic</code> must be set to <b>outputs_off</b>.
+        Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.prefixAndUserCode</code> - 16 character long string containing (optional)
+            prefix followed by user code. If length of prefix + length of user code is less than
+            16 characters, remaining characters should be filled with <i>'f'</i>. E.g. for
+            prefix: <i>"0346"</i> and user code: <i>"7696"</i>, the property value should be
+            <i>"03467696ffffffff"</i>.
+          </li>
+          <li>
+            <code>msg.outputs</code> - 128 or 256 elements long boolean array. Index of an element
+            is equal to index of an output. Outputs for which their corresponding array element is
+            set to <i>true</i>, will be turned off. The other outputs will remain unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Outputs switch command</dfn> - <code>msg.topic</code> must be set to
+        <b>outputs_switch</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.prefixAndUserCode</code> - 16 character long string containing (optional)
+            prefix followed by user code. If length of prefix + length of user code is less than
+            16 characters, remaining characters should be filled with <i>'f'</i>. E.g. for
+            prefix: <i>"0346"</i> and user code: <i>"7696"</i>, the property value should be
+            <i>"03467696ffffffff"</i>.
+          </li>
+          <li>
+            <code>msg.outputs</code> - 128 or 256 elements long boolean array. Index of an element
+            is equal to index of an output. Outputs for which their corresponding array element is
+            set to <i>true</i>, will be toggled. The other outputs will remain unchanged.
+          </li>
+        </ul>
       </li>
     </ul>
   </p>

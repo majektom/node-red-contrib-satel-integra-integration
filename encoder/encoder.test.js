@@ -131,7 +131,7 @@ describe("satel-integra-encoder Node", function () {
     });
   });
 
-  let encodeCommandTests = [
+  let encodeNoDataCommandTests = [
     {
       commandName: "new_data",
       expectedPayload: protocol.encodeNewDataCommand(),
@@ -150,7 +150,7 @@ describe("satel-integra-encoder Node", function () {
     },
   ];
 
-  encodeCommandTests.forEach(function (test) {
+  encodeNoDataCommandTests.forEach(function (test) {
     it("should properly encode " + test.commandName + " command", function () {
       return new Promise(function (resolve, reject) {
         const flow = [
@@ -180,5 +180,137 @@ describe("satel-integra-encoder Node", function () {
         assert.fail(error);
       });
     });
+  });
+
+  let encodeOutputsChangeCommandTests = [
+    {
+      commandName: "outputs_off",
+      encodeFunction: protocol.encodeOutputsOffCommand,
+    },
+    {
+      commandName: "outputs_on",
+      encodeFunction: protocol.encodeOutputsOnCommand,
+    },
+    {
+      commandName: "outputs_switch",
+      encodeFunction: protocol.encodeOutputsSwitchCommand,
+    },
+  ];
+  encodeOutputsChangeCommandTests.forEach(function (test) {
+    it("should properly encode " + test.commandName + " command", function () {
+      return new Promise(function (resolve, reject) {
+        const prefixAndUserCode = "65872497ffffffff";
+        const outputs = new Array(128)
+          .fill(false)
+          .fill(true, 3, 4)
+          .fill(true, 42, 44);
+        const flow = [
+          {
+            id: "n1",
+            type: "satel-integra-encoder",
+            name: "Encoder",
+            wires: [["n2"]],
+          },
+          { id: "n2", type: "helper" },
+        ];
+        helper.load([encoder, catchNode], flow, function () {
+          const encoderNode = helper.getNode("n1");
+          const helperNode = helper.getNode("n2");
+          helperNode.on("input", function (msg) {
+            try {
+              msg.should.have.property("topic", test.commandName);
+              msg.should.have.property(
+                "payload",
+                test.encodeFunction(prefixAndUserCode, outputs)
+              );
+              resolve();
+            } catch (error) {
+              reject(error);
+            }
+          });
+          encoderNode.receive({
+            topic: test.commandName,
+            prefixAndUserCode: prefixAndUserCode,
+            outputs: outputs,
+          });
+        });
+      }).catch(function (error) {
+        assert.fail(error);
+      });
+    });
+  });
+
+  let encodeWrongOutputsChangeCommandTests = [
+    {
+      commandName: "outputs_off",
+      encodeFunction: protocol.encodeOutputsOffCommand,
+    },
+    {
+      commandName: "outputs_on",
+      encodeFunction: protocol.encodeOutputsOnCommand,
+    },
+    {
+      commandName: "outputs_switch",
+      encodeFunction: protocol.encodeOutputsSwitchCommand,
+    },
+  ];
+  encodeWrongOutputsChangeCommandTests.forEach(function (test) {
+    it(
+      "should issue error on wrong " + test.commandName + " message",
+      function () {
+        return new Promise(function (resolve, reject) {
+          const flow = [
+            { id: "f1", type: "tab", label: "Test flow" },
+            {
+              id: "n1",
+              z: "f1",
+              type: "satel-integra-encoder",
+              name: "Encoder",
+              wires: [["n2"]],
+            },
+            { id: "n2", z: "f1", type: "helper" },
+            { id: "n3", z: "f1", type: "helper" },
+            { id: "n4", z: "f1", type: "catch", wires: [["n3"]] },
+          ];
+          helper.load([encoder, catchNode], flow, function () {
+            const encoderNode = helper.getNode("n1");
+            const helperNode1 = helper.getNode("n2");
+            const helperNode2 = helper.getNode("n3");
+            helperNode1.on("input", function (msg) {
+              try {
+                assert.fail("message should have been discarded");
+              } catch (error) {
+                reject(error);
+              }
+            });
+            helperNode2.on("input", function (msg) {
+              try {
+                msg.should.have.property("topic", test.commandName);
+                assert(
+                  msg.error.message.startsWith(
+                    test.commandName + " command encoding error"
+                  )
+                );
+                msg.error.should.have.property("source", {
+                  id: "n1",
+                  type: "satel-integra-encoder",
+                  name: "Encoder",
+                  count: 1,
+                });
+                resolve();
+              } catch (error) {
+                reject(error);
+              }
+            });
+            encoderNode.receive({
+              topic: test.commandName,
+              prefixAndUserCode: "abcd",
+            });
+          });
+        }).catch(function (error) {
+          assert.fail(error);
+        });
+      }
+    );
   });
 });
