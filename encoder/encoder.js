@@ -15,15 +15,14 @@ module.exports = function (RED) {
         }
         return;
       }
-      let cmd;
       if (msg.topic == "new_data") {
-        cmd = new protocol.NewDataCommand();
+        msg.payload = protocol.encodeNewDataCommand();
       } else if (msg.topic == "outputs_state") {
-        cmd = new protocol.OutputsStateCommand();
+        msg.payload = protocol.encodeOutputsStateCommand();
       } else if (msg.topic == "zones_tamper") {
-        cmd = new protocol.ZonesTamperCommand();
+        msg.payload = protocol.encodeZonesTamperCommand();
       } else if (msg.topic == "zones_violation") {
-        cmd = new protocol.ZonesViolationCommand();
+        msg.payload = protocol.encodeZonesViolationCommand();
       } else {
         const err = "unsupported message topic: '" + msg.topic + "'";
         /* istanbul ignore else: the else path can be reached with old node-red versions only */
@@ -34,7 +33,6 @@ module.exports = function (RED) {
         }
         return;
       }
-      msg.payload = cmd.encode();
       /* istanbul ignore else: the else path can be reached with old node-red versions only */
       if (send) {
         send(msg);

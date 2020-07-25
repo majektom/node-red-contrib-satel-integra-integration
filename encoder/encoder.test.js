@@ -131,135 +131,54 @@ describe("satel-integra-encoder Node", function () {
     });
   });
 
-  it("should properly encode new_data command", function () {
-    return new Promise(function (resolve, reject) {
-      const flow = [
-        {
-          id: "n1",
-          type: "satel-integra-encoder",
-          name: "Encoder",
-          wires: [["n2"]],
-        },
-        { id: "n2", type: "helper" },
-      ];
-      helper.load([encoder, catchNode], flow, function () {
-        const encoderNode = helper.getNode("n1");
-        const helperNode = helper.getNode("n2");
-        helperNode.on("input", function (msg) {
-          try {
-            msg.should.have.property("topic", "new_data");
-            msg.should.have.property(
-              "payload",
-              new protocol.NewDataCommand().encode()
-            );
-            resolve();
-          } catch (error) {
-            reject(error);
-          }
-        });
-        encoderNode.receive({ topic: "new_data" });
-      });
-    }).catch(function (error) {
-      assert.fail(error);
-    });
-  });
+  let encodeCommandTests = [
+    {
+      commandName: "new_data",
+      expectedPayload: protocol.encodeNewDataCommand(),
+    },
+    {
+      commandName: "outputs_state",
+      expectedPayload: protocol.encodeOutputsStateCommand(),
+    },
+    {
+      commandName: "zones_tamper",
+      expectedPayload: protocol.encodeZonesTamperCommand(),
+    },
+    {
+      commandName: "zones_violation",
+      expectedPayload: protocol.encodeZonesViolationCommand(),
+    },
+  ];
 
-  it("should properly encode outputs_state command", function () {
-    return new Promise(function (resolve, reject) {
-      const flow = [
-        {
-          id: "n1",
-          type: "satel-integra-encoder",
-          name: "Encoder",
-          wires: [["n2"]],
-        },
-        { id: "n2", type: "helper" },
-      ];
-      helper.load([encoder, catchNode], flow, function () {
-        const encoderNode = helper.getNode("n1");
-        const helperNode = helper.getNode("n2");
-        helperNode.on("input", function (msg) {
-          try {
-            msg.should.have.property("topic", "outputs_state");
-            msg.should.have.property(
-              "payload",
-              new protocol.OutputsStateCommand().encode()
-            );
-            resolve();
-          } catch (error) {
-            reject(error);
-          }
+  encodeCommandTests.forEach(function (test) {
+    it("should properly encode " + test.commandName + " command", function () {
+      return new Promise(function (resolve, reject) {
+        const flow = [
+          {
+            id: "n1",
+            type: "satel-integra-encoder",
+            name: "Encoder",
+            wires: [["n2"]],
+          },
+          { id: "n2", type: "helper" },
+        ];
+        helper.load([encoder, catchNode], flow, function () {
+          const encoderNode = helper.getNode("n1");
+          const helperNode = helper.getNode("n2");
+          helperNode.on("input", function (msg) {
+            try {
+              msg.should.have.property("topic", test.commandName);
+              msg.should.have.property("payload", test.expectedPayload);
+              resolve();
+            } catch (error) {
+              reject(error);
+            }
+          });
+          encoderNode.receive({ topic: test.commandName });
         });
-        encoderNode.receive({ topic: "outputs_state" });
+      }).catch(function (error) {
+        assert.fail(error);
       });
-    }).catch(function (error) {
-      assert.fail(error);
-    });
-  });
-
-  it("should properly encode zones_tamper command", function () {
-    return new Promise(function (resolve, reject) {
-      const flow = [
-        {
-          id: "n1",
-          type: "satel-integra-encoder",
-          name: "Encoder",
-          wires: [["n2"]],
-        },
-        { id: "n2", type: "helper" },
-      ];
-      helper.load([encoder, catchNode], flow, function () {
-        const encoderNode = helper.getNode("n1");
-        const helperNode = helper.getNode("n2");
-        helperNode.on("input", function (msg) {
-          try {
-            msg.should.have.property("topic", "zones_tamper");
-            msg.should.have.property(
-              "payload",
-              new protocol.ZonesTamperCommand().encode()
-            );
-            resolve();
-          } catch (error) {
-            reject(error);
-          }
-        });
-        encoderNode.receive({ topic: "zones_tamper" });
-      });
-    }).catch(function (error) {
-      assert.fail(error);
-    });
-  });
-
-  it("should properly encode zones_violation command", function () {
-    return new Promise(function (resolve, reject) {
-      const flow = [
-        {
-          id: "n1",
-          type: "satel-integra-encoder",
-          name: "Encoder",
-          wires: [["n2"]],
-        },
-        { id: "n2", type: "helper" },
-      ];
-      helper.load([encoder, catchNode], flow, function () {
-        const encoderNode = helper.getNode("n1");
-        const helperNode = helper.getNode("n2");
-        helperNode.on("input", function (msg) {
-          try {
-            msg.should.have.property("topic", "zones_violation");
-            msg.should.have.property(
-              "payload",
-              new protocol.ZonesViolationCommand().encode()
-            );
-            resolve();
-          } catch (error) {
-            reject(error);
-          }
-        });
-        encoderNode.receive({ topic: "zones_violation" });
-      });
-    }).catch(function (error) {
-      assert.fail(error);
     });
   });
 });

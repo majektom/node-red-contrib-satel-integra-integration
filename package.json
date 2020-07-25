@@ -28,7 +28,7 @@
   "author": "Tomasz Maj",
   "license": "MIT",
   "dependencies": {
-    "satel-integra-integration-protocol": "^0.2.0"
+    "satel-integra-integration-protocol": "^0.3.0"
   },
   "devDependencies": {
     "coveralls": "^3.1.0",
