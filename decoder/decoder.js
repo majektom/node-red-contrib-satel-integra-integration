@@ -28,6 +28,12 @@ module.exports = function (RED) {
       } else if (decoded_msg instanceof protocol.ZonesViolationAnswer) {
         msg.topic = "zones_violation";
         msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.CommandResultAnswer) {
+        msg.topic = "command_result";
+        msg.payload = {
+          code: decoded_msg.resultCode,
+          message: decoded_msg.resultMessage,
+        };
       } else {
         const err =
           "message decoding failed, payload: " + msg.payload.toString("hex");

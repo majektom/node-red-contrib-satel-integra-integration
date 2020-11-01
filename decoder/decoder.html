@@ -32,27 +32,39 @@
     The supported message types are:
     <ul>
       <li>
-        <dfn>New data answer</dfn> - the output message topic is set to <b>new_data</b> and the
-        message payload contains array of flags conveying information whether the data related to
-        particular commands has changed. See the
+        <dfn>New data answer [0x7F]</dfn> - the output message topic is set to <b>new_data</b> and
+        the message payload contains array of flags conveying information whether the data related
+        to particular commands has changed. See the
         <a href=https://www.satel.pl/en/download/instrukcje/ethm1_op_int_2020-03-05_4f512412.pdf>
           protocol documentation
         </a> on how to relate a flag to its command.
       </li>
       <li>
-        <dfn>Outputs state answer</dfn> - the output message topic is set to <b>outputs_state</b>
-        and the message payload contains array of flags conveying state of all outputs. The index of
-        a flag corresponds to the index of an output.
+        <dfn>Outputs state answer [0x17]</dfn> - the output message topic is set to
+        <b>outputs_state</b> and the message payload contains array of flags conveying state of all
+        outputs. The index of a flag corresponds to the index of an output.
       </li>
       <li>
-        <dfn>Zones tamper answer</dfn> - the message topic is set to <b>zones_tamper</b> and the
-        message payload contains array of flags conveying tamper state of all inputs. The index of a
-        flag corresponds to the index of an input.
+        <dfn>Zones tamper answer [0x01]</dfn> - the message topic is set to <b>zones_tamper</b> and
+        the message payload contains array of flags conveying tamper state of all inputs. The index
+        of a flag corresponds to the index of an input.
       </li>
       <li>
-        <dfn>Zones violation answer</dfn> - the output message topic is set to
+        <dfn>Zones violation answer [0x00]</dfn> - the output message topic is set to
         <b>zones_violation</b> and the message payload contains array of flags conveying violation
         state of all inputs. The index of a flag corresponds to the index of an input.
+      </li>
+      <li>
+        <dfn>Command result answer [0xEF]</dfn> - the output message topic is set to
+        <b>command_result</b>. The message payload contains two fields:
+        <ul>
+          <li>
+            <b>code</b> - result code of the last received command message.
+          </li>
+          <li>
+            <b>message</b> - human readable text representation of the result code.
+          </li>
+        </ul>
       </li>
     </ul>
   </p>

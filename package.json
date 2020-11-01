@@ -28,15 +28,15 @@
   "author": "Tomasz Maj",
   "license": "MIT",
   "dependencies": {
-    "satel-integra-integration-protocol": "^0.3.0"
+    "satel-integra-integration-protocol": "^0.4.0"
   },
   "devDependencies": {
     "coveralls": "^3.1.0",
     "istanbul": "^0.4.5",
     "mocha": "^7.2.0",
-    "node-red": "^1.1.2",
+    "node-red": "^1.2.2",
     "node-red-node-test-helper": "^0.2.5",
     "prettier": "2.0.5",
-    "sinon": "^9.0.2"
+    "sinon": "^9.2.1"
   }
 }

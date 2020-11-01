@@ -344,4 +344,43 @@ describe("satel-integra-decoder Node", function () {
       assert.fail(error);
     });
   });
+
+  it("should properly parse command result answer", function () {
+    return new Promise(function (resolve, reject) {
+      const answerMsg = new protocol.CommandResultAnswer();
+      answerMsg.resultCode = 0x42;
+      answerMsg.resultMessage = "Result message";
+      sinon.replace(protocol, "decodeMessage", sinon.fake.returns(answerMsg));
+      const flow = [
+        {
+          id: "n1",
+          type: "satel-integra-decoder",
+          name: "Decoder",
+          wires: [["n2"]],
+        },
+        { id: "n2", type: "helper" },
+      ];
+      helper.load(decoder, flow, function () {
+        const decoderNode = helper.getNode("n1");
+        const helperNode = helper.getNode("n2");
+        helperNode.on("input", function (msg) {
+          try {
+            msg.should.have.property("topic", "command_result");
+            msg.should.have.property("payload");
+            msg.payload.should.have.property("code", answerMsg.resultCode);
+            msg.payload.should.have.property(
+              "message",
+              answerMsg.resultMessage
+            );
+            resolve();
+          } catch (error) {
+            reject(error);
+          }
+        });
+        decoderNode.receive({ payload: Buffer.from([0x01, 0x02, 0x03]) });
+      });
+    }).catch(function (error) {
+      assert.fail(error);
+    });
+  });
 });
