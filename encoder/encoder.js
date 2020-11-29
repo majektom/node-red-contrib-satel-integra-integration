@@ -1,17 +1,12 @@
+const impl = require("./encoder_impl.js");
 const protocol = require("satel-integra-integration-protocol");
-
-function encodeOutputsChangeCommand(msg, encodeFunction) {
-  try {
-    msg.payload = encodeFunction(msg.prefixAndUserCode, msg.outputs);
-  } catch (error) {
-    throw msg.topic + " command encoding error: " + error;
-  }
-}
 
 module.exports = function (RED) {
   function Encoder(config) {
     RED.nodes.createNode(this, config);
     const node = this;
+    node.userNode = RED.nodes.getNode(config.user);
+    node.prefixNode = RED.nodes.getNode(config.prefix);
     node.on("input", function (msg, send, done) {
       try {
         if (!msg.topic) {
@@ -26,11 +21,23 @@ module.exports = function (RED) {
         } else if (msg.topic == "zones_violation") {
           msg.payload = protocol.encodeZonesViolationCommand();
         } else if (msg.topic == "outputs_off") {
-          encodeOutputsChangeCommand(msg, protocol.encodeOutputsOffCommand);
+          impl.encodeOutputsChangeCommand(
+            msg,
+            protocol.encodeOutputsOffCommand,
+            impl.getPrefixAndUserCode(node.userNode, node.prefixNode)
+          );
         } else if (msg.topic == "outputs_on") {
-          encodeOutputsChangeCommand(msg, protocol.encodeOutputsOnCommand);
+          impl.encodeOutputsChangeCommand(
+            msg,
+            protocol.encodeOutputsOnCommand,
+            impl.getPrefixAndUserCode(node.userNode, node.prefixNode)
+          );
         } else if (msg.topic == "outputs_switch") {
-          encodeOutputsChangeCommand(msg, protocol.encodeOutputsSwitchCommand);
+          impl.encodeOutputsChangeCommand(
+            msg,
+            protocol.encodeOutputsSwitchCommand,
+            impl.getPrefixAndUserCode(node.userNode, node.prefixNode)
+          );
         } else {
           throw "unsupported message topic: '" + msg.topic + "'";
         }

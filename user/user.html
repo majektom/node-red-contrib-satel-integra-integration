@@ -1,0 +1,30 @@
+<script type="text/javascript">
+  RED.nodes.registerType("satel-integra-user", {
+    category: "config",
+    defaults: {
+      name: { value: "", required: true },
+    },
+    credentials: {
+      code: {
+        type: "password",
+        required: true,
+        validate: RED.validators.regex(/^[0-9]{4,8}$/),
+      },
+    },
+    label: function () {
+      return this.name;
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="satel-integra-user">
+    <div class="form-row">
+      <label for="node-config-input-name"><i class="fa fa-bookmark"></i> Name</label>
+      <input type="text" id="node-config-input-name">
+    </div>
+    <div class="form-row" title="The code validating the user of the security system.
+  Must be a string consisting of at least 4 and at most 8 digits.">
+      <label for="node-config-input-code"><i class="fa fa-bookmark"></i> Code</label>
+      <input type="password" id="node-config-input-code">
+    </div>
+</script>

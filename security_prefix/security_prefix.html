@@ -1,0 +1,31 @@
+<script type="text/javascript">
+  RED.nodes.registerType("satel-integra-security_prefix", {
+    category: "config",
+    defaults: {
+      name: { value: "Prefix", required: true },
+    },
+    credentials: {
+      prefix: {
+        value: "",
+        type: "password",
+        required: false,
+        validate: RED.validators.regex(/^[0-9]{0,8}$/),
+      },
+    },
+    label: function () {
+      return this.name;
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="satel-integra-security_prefix">
+    <div class="form-row">
+      <label for="node-config-input-name"><i class="fa fa-bookmark"></i> Name</label>
+      <input type="text" id="node-config-input-name">
+    </div>
+    <div class="form-row" title="The security prefix preceding user code. Must be a string
+  consisting of at least 1 and at most 8 digits or empty value.">
+      <label for="node-config-input-prefix"><i class="fa fa-bookmark"></i> Prefix</label>
+      <input type="password" id="node-config-input-prefix">
+    </div>
+</script>

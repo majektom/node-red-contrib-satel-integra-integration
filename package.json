@@ -16,7 +16,9 @@
   "node-red": {
     "nodes": {
       "decoder": "decoder/decoder.js",
-      "encoder": "encoder/encoder.js"
+      "encoder": "encoder/encoder.js",
+      "security_prefix": "security_prefix/security_prefix.js",
+      "user": "user/user.js"
     }
   },
   "keywords": [

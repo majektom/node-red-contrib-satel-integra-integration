@@ -4,6 +4,12 @@
     color: "#c0c0c0",
     defaults: {
       name: { value: "Satel Integra encoder" },
+      user: { value: "", type: "satel-integra-user", required: false },
+      prefix: {
+        value: "",
+        type: "satel-integra-security_prefix",
+        required: false,
+      },
     },
     inputs: 1,
     outputs: 1,
@@ -19,6 +25,14 @@
     <label for="node-input-name"><i class="icon-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name">
   </div>
+  <div class="form-row">
+    <label for="node-input-user"><i class="icon-tag"></i> User</label>
+    <input type="text" id="node-input-user">
+  </div>
+  <div class="form-row">
+    <label for="node-input-prefix"><i class="icon-tag"></i> Security prefix</label>
+    <input type="text" id="node-input-prefix">
+  </div>
 </script>
 
 <script type="text/html" data-help-name="satel-integra-encoder">
@@ -26,6 +40,20 @@
     A node that encodes protocol frames and sends them out as a buffer of bytes stored in the
     message payload. The type of message to encode should be stored in the <code>msg.topic</code>
     property.
+  </p>
+  <p>
+    Properties:
+    <ul>
+      <li>
+        <b>User</b> - security system user which will be used to authorize commands requiring
+        authorization.
+      </li>
+      <li>
+        <b>Security prefix</b> - security prefix which will be added at the beginning of the
+        authorization token. The authorization token which is sent to the Integra system is the
+        concatenation of the security prefix and the user code.
+      </li>
+    </ul>
   </p>
   <p>
     The supported message types are:
@@ -54,6 +82,8 @@
             16 characters, remaining characters should be filled with <i>'f'</i>. E.g. for
             prefix: <i>"0346"</i> and user code: <i>"7696"</i>, the property value should be
             <i>"03467696ffffffff"</i>.
+            <b>Note</b>, this way of authorization is <b>deprecated</b>.Use <code>User</code> and
+            <code>Prefix</code> properties instead.
           </li>
           <li>
             <code>msg.outputs</code> - 128 or 256 elements long boolean array. Index of an element
@@ -72,6 +102,8 @@
             16 characters, remaining characters should be filled with <i>'f'</i>. E.g. for
             prefix: <i>"0346"</i> and user code: <i>"7696"</i>, the property value should be
             <i>"03467696ffffffff"</i>.
+            <b>Note</b>, this way of authorization is <b>deprecated</b>.Use <code>User</code> and
+            <code>Prefix</code> properties instead.
           </li>
           <li>
             <code>msg.outputs</code> - 128 or 256 elements long boolean array. Index of an element
@@ -90,6 +122,8 @@
             16 characters, remaining characters should be filled with <i>'f'</i>. E.g. for
             prefix: <i>"0346"</i> and user code: <i>"7696"</i>, the property value should be
             <i>"03467696ffffffff"</i>.
+            <b>Note</b>, this way of authorization is <b>deprecated</b>.Use <code>User</code> and
+            <code>Prefix</code> properties instead.
           </li>
           <li>
             <code>msg.outputs</code> - 128 or 256 elements long boolean array. Index of an element
