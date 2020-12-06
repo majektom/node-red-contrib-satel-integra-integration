@@ -213,135 +213,97 @@ describe("satel-integra-decoder Node", function () {
     });
   });
 
-  it("should properly parse new data answer", function () {
-    return new Promise(function (resolve, reject) {
-      const answerMsg = new protocol.NewDataAnswer();
-      answerMsg._flags = [false, true, true, false];
-      sinon.replace(protocol, "decodeMessage", sinon.fake.returns(answerMsg));
-      const flow = [
-        {
-          id: "n1",
-          type: "satel-integra-decoder",
-          name: "Decoder",
-          wires: [["n2"]],
-        },
-        { id: "n2", type: "helper" },
-      ];
-      helper.load(decoder, flow, function () {
-        const decoderNode = helper.getNode("n1");
-        const helperNode = helper.getNode("n2");
-        helperNode.on("input", function (msg) {
-          try {
-            msg.should.have.property("topic", "new_data");
-            msg.should.have.property("payload", answerMsg.flags);
-            resolve();
-          } catch (error) {
-            reject(error);
-          }
-        });
-        decoderNode.receive({ payload: Buffer.from([0x01, 0x02, 0x03]) });
-      });
-    }).catch(function (error) {
-      assert.fail(error);
-    });
-  });
+  const decodeFlagsArrayAnswerTest = [
+    {
+      messageTopic: "new_data",
+      answerMessage: protocol.NewDataAnswer,
+    },
+    {
+      messageTopic: "outputs_state",
+      answerMessage: protocol.OutputsStateAnswer,
+    },
+    {
+      messageTopic: "zones_tamper",
+      answerMessage: protocol.ZonesTamperAnswer,
+    },
+    {
+      messageTopic: "zones_violation",
+      answerMessage: protocol.ZonesViolationAnswer,
+    },
+    {
+      messageTopic: "zones_alarm",
+      answerMessage: protocol.ZonesAlarmAnswer,
+    },
+    {
+      messageTopic: "zones_tamper_alarm",
+      answerMessage: protocol.ZonesTamperAlarmAnswer,
+    },
+    {
+      messageTopic: "zones_alarm_memory",
+      answerMessage: protocol.ZonesAlarmMemoryAnswer,
+    },
+    {
+      messageTopic: "zones_tamper_alarm_memory",
+      answerMessage: protocol.ZonesTamperAlarmMemoryAnswer,
+    },
+    {
+      messageTopic: "zones_bypass_status",
+      answerMessage: protocol.ZonesBypassStatusAnswer,
+    },
+    {
+      messageTopic: "zones_no_violation_trouble",
+      answerMessage: protocol.ZonesNoViolationTroubleAnswer,
+    },
+    {
+      messageTopic: "zones_long_violation_trouble",
+      answerMessage: protocol.ZonesLongViolationTroubleAnswer,
+    },
+    {
+      messageTopic: "zones_isolate_state",
+      answerMessage: protocol.ZonesIsolateStateAnswer,
+    },
+    {
+      messageTopic: "zones_masked",
+      answerMessage: protocol.ZonesMaskedAnswer,
+    },
+    {
+      messageTopic: "zones_masked_memory",
+      answerMessage: protocol.ZonesMaskedMemoryAnswer,
+    },
+  ];
 
-  it("should properly parse outputs state answer", function () {
-    return new Promise(function (resolve, reject) {
-      const answerMsg = new protocol.OutputsStateAnswer();
-      answerMsg._flags = [false, true, true, false];
-      sinon.replace(protocol, "decodeMessage", sinon.fake.returns(answerMsg));
-      const flow = [
-        {
-          id: "n1",
-          type: "satel-integra-decoder",
-          name: "Decoder",
-          wires: [["n2"]],
-        },
-        { id: "n2", type: "helper" },
-      ];
-      helper.load(decoder, flow, function () {
-        const decoderNode = helper.getNode("n1");
-        const helperNode = helper.getNode("n2");
-        helperNode.on("input", function (msg) {
-          try {
-            msg.should.have.property("topic", "outputs_state");
-            msg.should.have.property("payload", answerMsg.flags);
-            resolve();
-          } catch (error) {
-            reject(error);
-          }
+  decodeFlagsArrayAnswerTest.forEach(function (test) {
+    it("should properly parse " + test.messageTopic + " answer", function () {
+      return new Promise(function (resolve, reject) {
+        const answerMsg = new test.answerMessage();
+        answerMsg._flags = [false, true, true, false];
+        sinon.replace(protocol, "decodeMessage", sinon.fake.returns(answerMsg));
+        const flow = [
+          {
+            id: "n1",
+            type: "satel-integra-decoder",
+            name: "Decoder",
+            wires: [["n2"]],
+          },
+          { id: "n2", type: "helper" },
+        ];
+        helper.load(decoder, flow, function () {
+          const decoderNode = helper.getNode("n1");
+          const helperNode = helper.getNode("n2");
+          helperNode.on("input", function (msg) {
+            try {
+              msg.should.have.property("topic", test.messageTopic);
+              msg.should.have.property("payload", answerMsg.flags);
+              resolve();
+            } catch (error) {
+              reject(error);
+            }
+          });
+          decoderNode.receive({ payload: Buffer.from([0x01, 0x02, 0x03]) });
         });
-        decoderNode.receive({ payload: Buffer.from([0x01, 0x02, 0x03]) });
+      }).catch(function (error) {
+        assert.fail(error);
       });
-    }).catch(function (error) {
-      assert.fail(error);
-    });
-  });
-
-  it("should properly parse zones tamper answer", function () {
-    return new Promise(function (resolve, reject) {
-      const answerMsg = new protocol.ZonesTamperAnswer();
-      answerMsg._flags = [false, true, true, false];
-      sinon.replace(protocol, "decodeMessage", sinon.fake.returns(answerMsg));
-      const flow = [
-        {
-          id: "n1",
-          type: "satel-integra-decoder",
-          name: "Decoder",
-          wires: [["n2"]],
-        },
-        { id: "n2", type: "helper" },
-      ];
-      helper.load(decoder, flow, function () {
-        const decoderNode = helper.getNode("n1");
-        const helperNode = helper.getNode("n2");
-        helperNode.on("input", function (msg) {
-          try {
-            msg.should.have.property("topic", "zones_tamper");
-            msg.should.have.property("payload", answerMsg.flags);
-            resolve();
-          } catch (error) {
-            reject(error);
-          }
-        });
-        decoderNode.receive({ payload: Buffer.from([0x01, 0x02, 0x03]) });
-      });
-    }).catch(function (error) {
-      assert.fail(error);
-    });
-  });
-
-  it("should properly parse zones violation answer", function () {
-    return new Promise(function (resolve, reject) {
-      const answerMsg = new protocol.ZonesViolationAnswer();
-      answerMsg._flags = [false, true, true, false];
-      sinon.replace(protocol, "decodeMessage", sinon.fake.returns(answerMsg));
-      const flow = [
-        {
-          id: "n1",
-          type: "satel-integra-decoder",
-          name: "Decoder",
-          wires: [["n2"]],
-        },
-        { id: "n2", type: "helper" },
-      ];
-      helper.load(decoder, flow, function () {
-        const decoderNode = helper.getNode("n1");
-        const helperNode = helper.getNode("n2");
-        helperNode.on("input", function (msg) {
-          try {
-            msg.should.have.property("topic", "zones_violation");
-            msg.should.have.property("payload", answerMsg.flags);
-            resolve();
-          } catch (error) {
-            reject(error);
-          }
-        });
-        decoderNode.receive({ payload: Buffer.from([0x01, 0x02, 0x03]) });
-      });
-    }).catch(function (error) {
-      assert.fail(error);
     });
   });
 

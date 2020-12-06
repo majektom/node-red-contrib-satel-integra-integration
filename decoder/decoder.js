@@ -28,6 +28,40 @@ module.exports = function (RED) {
       } else if (decoded_msg instanceof protocol.ZonesViolationAnswer) {
         msg.topic = "zones_violation";
         msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.ZonesAlarmAnswer) {
+        msg.topic = "zones_alarm";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.ZonesTamperAlarmAnswer) {
+        msg.topic = "zones_tamper_alarm";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.ZonesAlarmMemoryAnswer) {
+        msg.topic = "zones_alarm_memory";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.ZonesTamperAlarmMemoryAnswer) {
+        msg.topic = "zones_tamper_alarm_memory";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.ZonesBypassStatusAnswer) {
+        msg.topic = "zones_bypass_status";
+        msg.payload = decoded_msg.flags;
+      } else if (
+        decoded_msg instanceof protocol.ZonesNoViolationTroubleAnswer
+      ) {
+        msg.topic = "zones_no_violation_trouble";
+        msg.payload = decoded_msg.flags;
+      } else if (
+        decoded_msg instanceof protocol.ZonesLongViolationTroubleAnswer
+      ) {
+        msg.topic = "zones_long_violation_trouble";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.ZonesIsolateStateAnswer) {
+        msg.topic = "zones_isolate_state";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.ZonesMaskedAnswer) {
+        msg.topic = "zones_masked";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.ZonesMaskedMemoryAnswer) {
+        msg.topic = "zones_masked_memory";
+        msg.payload = decoded_msg.flags;
       } else if (decoded_msg instanceof protocol.CommandResultAnswer) {
         msg.topic = "command_result";
         msg.payload = {

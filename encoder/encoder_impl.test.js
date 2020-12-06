@@ -32,26 +32,46 @@ describe("satel-integra-encoder Node unit test", function () {
     assert.strictEqual(call.args[1], msg.outputs);
   });
 
-  it("encodeOutputsChangeCommand() should re-throw encode function exception", function () {
-    const errorMessage = "error message";
-    let callback = sinon.fake.throws(errorMessage);
-    const msg = { topic: "my_command" };
-    assert.throws(
-      function () {
-        impl.encodeOutputsChangeCommand(msg, callback);
-      },
-      function (error) {
-        return (
-          error.search(new RegExp(errorMessage)) != -1 &&
-          error.search(new RegExp(msg.topic)) != -1
-        );
-      }
-    );
+  it("encodeZonesChangeCommand() should encode valid message", function () {
+    let callback = sinon.fake();
+    const msg = {
+      zones: [true, false],
+    };
+    const prefixAndUserCode = "code";
+    impl.encodeZonesChangeCommand(msg, callback, prefixAndUserCode);
     assert(callback.calledOnce);
     const call = callback.getCall(0);
     assert.strictEqual(call.args.length, 2);
-    assert.strictEqual(call.args[0], undefined);
-    assert.strictEqual(call.args[1], undefined);
+    assert.strictEqual(call.args[0], prefixAndUserCode);
+    assert.strictEqual(call.args[1], msg.zones);
+  });
+
+  const encodeChangeCommandRethrowTests = [
+    impl.encodeOutputsChangeCommand,
+    impl.encodeZonesChangeCommand,
+  ];
+  encodeChangeCommandRethrowTests.forEach(function (func) {
+    it(func.name + "() should re-throw encode function exception", function () {
+      const errorMessage = "error message";
+      let callback = sinon.fake.throws(errorMessage);
+      const msg = { topic: "my_command" };
+      assert.throws(
+        function () {
+          func(msg, callback);
+        },
+        function (error) {
+          return (
+            error.search(new RegExp(errorMessage)) != -1 &&
+            error.search(new RegExp(msg.topic)) != -1
+          );
+        }
+      );
+      assert(callback.calledOnce);
+      const call = callback.getCall(0);
+      assert.strictEqual(call.args.length, 2);
+      assert.strictEqual(call.args[0], undefined);
+      assert.strictEqual(call.args[1], undefined);
+    });
   });
 
   it("getPrefixAndUserCode()", function () {

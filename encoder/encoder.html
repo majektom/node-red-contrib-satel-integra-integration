@@ -59,22 +59,63 @@
     The supported message types are:
     <ul>
       <li>
-        <dfn>New data command</dfn> - <code>msg.topic</code> must be set to <b>new_data</b>
+        <dfn>New data command [0x7F]</dfn> - <code>msg.topic</code> must be set to <b>new_data</b>.
       </li>
       <li>
-        <dfn>Outputs state command</dfn> - <code>msg.topic</code> must be set to
-        <b>outputs_state</b>
+        <dfn>Outputs state command [0x17]</dfn> - <code>msg.topic</code> must be set to
+        <b>outputs_state</b>.
       </li>
       <li>
-        <dfn>Zones tamper command</dfn> - <code>msg.topic</code> must be set to <b>zones_tamper</b>
+        <dfn>Zones tamper command [0x01]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_tamper</b>.
       </li>
       <li>
-        <dfn>Zones violation command</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_violation</b>
+        <dfn>Zones violation command [0x00]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_violation</b>.
       </li>
       <li>
-        <dfn>Outputs on command</dfn> - <code>msg.topic</code> must be set to <b>outputs_on</b>.
-        Additionally the following properties are mandatory:
+        <dfn>Zones alarm command [0x02]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_alarm</b>.
+      </li>
+      <li>
+        <dfn>Zones tamper alarm command [0x03]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_tamper_alarm</b>.
+      </li>
+      <li>
+        <dfn>Zones alarm memory command [0x04]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_alarm_memory</b>.
+      </li>
+      <li>
+        <dfn>Zones tamper alarm memory command [0x05]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_tamper_alarm_memory</b>.
+      </li>
+      <li>
+        <dfn>Zones bypass status command [0x06]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_bypass_status</b>.
+      </li>
+      <li>
+        <dfn>Zones no violation trouble command [0x07]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_no_violation_trouble</b>.
+      </li>
+      <li>
+        <dfn>Zones long violation trouble command [0x08]</dfn> - <code>msg.topic</code> must be set
+        to <b>zones_long_violation_trouble</b>.
+      </li>
+      <li>
+        <dfn>Zones isolate state command [0x26]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_isolate_state</b>.
+      </li>
+      <li>
+        <dfn>Zones masked command [0x28]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_masked</b>.
+      </li>
+      <li>
+        <dfn>Zones masked memory command [0x29]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_masked_memory</b>.
+      </li>
+      <li>
+        <dfn>Outputs on command [0x88]</dfn> - <code>msg.topic</code> must be set to
+        <b>outputs_on</b>. Additionally the following properties are mandatory:
         <ul>
           <li>
             <code>msg.prefixAndUserCode</code> - 16 character long string containing (optional)
@@ -87,14 +128,14 @@
           </li>
           <li>
             <code>msg.outputs</code> - 128 or 256 elements long boolean array. Index of an element
-            is equal to index of an output. Outputs for which their corresponding array element is
+            is equal to index of the output. Outputs for which their corresponding array element is
             set to <i>true</i>, will be turned on. The other outputs will remain unchanged.
           </li>
         </ul>
       </li>
       <li>
-        <dfn>Outputs off command</dfn> - <code>msg.topic</code> must be set to <b>outputs_off</b>.
-        Additionally the following properties are mandatory:
+        <dfn>Outputs off command [0x89]</dfn> - <code>msg.topic</code> must be set to
+        <b>outputs_off</b>. Additionally the following properties are mandatory:
         <ul>
           <li>
             <code>msg.prefixAndUserCode</code> - 16 character long string containing (optional)
@@ -107,13 +148,13 @@
           </li>
           <li>
             <code>msg.outputs</code> - 128 or 256 elements long boolean array. Index of an element
-            is equal to index of an output. Outputs for which their corresponding array element is
+            is equal to index of the output. Outputs for which their corresponding array element is
             set to <i>true</i>, will be turned off. The other outputs will remain unchanged.
           </li>
         </ul>
       </li>
       <li>
-        <dfn>Outputs switch command</dfn> - <code>msg.topic</code> must be set to
+        <dfn>Outputs switch command [0x91]</dfn> - <code>msg.topic</code> must be set to
         <b>outputs_switch</b>. Additionally the following properties are mandatory:
         <ul>
           <li>
@@ -127,8 +168,41 @@
           </li>
           <li>
             <code>msg.outputs</code> - 128 or 256 elements long boolean array. Index of an element
-            is equal to index of an output. Outputs for which their corresponding array element is
+            is equal to index of the output. Outputs for which their corresponding array element is
             set to <i>true</i>, will be toggled. The other outputs will remain unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Zones bypass command [0x86]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_bypass</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.zones</code> - 128 or 256 elements long boolean array. Index of an element
+            is equal to index of the zone. Zones for which their corresponding array element is
+            set to <i>true</i>, will be bypassed. The other zones will remain unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Zones unbypass command [0x87]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_unbypass</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.zones</code> - 128 or 256 elements long boolean array. Index of an element
+            is equal to index of the zone. Zones for which their corresponding array element is
+            set to <i>true</i>, will be unbypassed. The other zones will remain unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Zones isolate command [0x90]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_isolate</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.zones</code> - 128 or 256 elements long boolean array. Index of an element
+            is equal to index of the zone. Zones for which their corresponding array element is
+            set to <i>true</i>, will be isolated. The other zones will remain unchanged.
           </li>
         </ul>
       </li>

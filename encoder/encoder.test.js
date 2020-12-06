@@ -173,7 +173,7 @@ describe("satel-integra-encoder Node", function () {
     });
   });
 
-  let encodeNoDataCommandTests = [
+  const encodeNoDataCommandTests = [
     {
       commandName: "new_data",
       expectedPayload: protocol.encodeNewDataCommand(),
@@ -190,8 +190,47 @@ describe("satel-integra-encoder Node", function () {
       commandName: "zones_violation",
       expectedPayload: protocol.encodeZonesViolationCommand(),
     },
+    {
+      commandName: "zones_alarm",
+      expectedPayload: protocol.encodeZonesAlarmCommand(),
+    },
+    {
+      commandName: "zones_tamper_alarm",
+      expectedPayload: protocol.encodeZonesTamperAlarmCommand(),
+    },
+    {
+      commandName: "zones_alarm_memory",
+      expectedPayload: protocol.encodeZonesAlarmMemoryCommand(),
+    },
+    {
+      commandName: "zones_tamper_alarm_memory",
+      expectedPayload: protocol.encodeZonesTamperAlarmMemoryCommand(),
+    },
+    {
+      commandName: "zones_bypass_status",
+      expectedPayload: protocol.encodeZonesBypassStatusCommand(),
+    },
+    {
+      commandName: "zones_no_violation_trouble",
+      expectedPayload: protocol.encodeZonesNoViolationTroubleCommand(),
+    },
+    {
+      commandName: "zones_long_violation_trouble",
+      expectedPayload: protocol.encodeZonesLongViolationTroubleCommand(),
+    },
+    {
+      commandName: "zones_isolate_state",
+      expectedPayload: protocol.encodeZonesIsolateStateCommand(),
+    },
+    {
+      commandName: "zones_masked",
+      expectedPayload: protocol.encodeZonesMaskedCommand(),
+    },
+    {
+      commandName: "zones_masked_memory",
+      expectedPayload: protocol.encodeZonesMaskedMemoryCommand(),
+    },
   ];
-
   encodeNoDataCommandTests.forEach(function (test) {
     it("should properly encode " + test.commandName + " command", function () {
       return new Promise(function (resolve, reject) {
@@ -242,7 +281,7 @@ describe("satel-integra-encoder Node", function () {
     });
   });
 
-  let encodeOutputsChangeCommandTests = [
+  const encodeOutputsChangeCommandTests = [
     {
       commandName: "outputs_off",
       encodeFunction: protocol.encodeOutputsOffCommand,
@@ -256,10 +295,33 @@ describe("satel-integra-encoder Node", function () {
       encodeFunction: protocol.encodeOutputsSwitchCommand,
     },
   ];
-  encodeOutputsChangeCommandTests.forEach(function (test) {
+  const encodeOutputsAndZonesChangeCommandTests = [
+    {
+      commandName: "zones_bypass",
+      encodeFunction: protocol.encodeZonesBypassCommand,
+      flagFieldName: "zones",
+    },
+    {
+      commandName: "zones_unbypass",
+      encodeFunction: protocol.encodeZonesUnbypassCommand,
+      flagFieldName: "zones",
+    },
+    {
+      commandName: "zones_isolate",
+      encodeFunction: protocol.encodeZonesIsolateCommand,
+      flagFieldName: "zones",
+    },
+  ].concat(
+    encodeOutputsChangeCommandTests.map(function (test) {
+      let result = Object.assign({}, test);
+      result.flagFieldName = "outputs";
+      return result;
+    })
+  );
+  encodeOutputsAndZonesChangeCommandTests.forEach(function (test) {
     it("should properly encode " + test.commandName + " command", function () {
       return new Promise(function (resolve, reject) {
-        const outputs = new Array(128)
+        const flagsArray = new Array(128)
           .fill(false)
           .fill(true, 3, 4)
           .fill(true, 42, 44);
@@ -302,7 +364,7 @@ describe("satel-integra-encoder Node", function () {
                   msg.should.have.property("topic", test.commandName);
                   msg.should.have.property(
                     "payload",
-                    test.encodeFunction("09876654321fffff", outputs)
+                    test.encodeFunction("09876654321fffff", flagsArray)
                   );
                   resolve();
                 } catch (error) {
@@ -312,12 +374,13 @@ describe("satel-integra-encoder Node", function () {
               helper2Node.on("input", function (msg) {
                 reject(msg.error);
               });
-              encoderNode.receive({
+              const msg = {
                 topic: test.commandName,
                 // This deprecated field should be ignored and superseded by code and prefix parameters
                 prefixAndUserCode: "87654321ffffffff",
-                outputs: outputs,
-              });
+              };
+              msg[test.flagFieldName] = flagsArray;
+              encoderNode.receive(msg);
             }
           )
           .catch(function (reason) {
@@ -387,21 +450,7 @@ describe("satel-integra-encoder Node", function () {
     );
   });
 
-  let encodeWrongOutputsChangeCommandTests = [
-    {
-      commandName: "outputs_off",
-      encodeFunction: protocol.encodeOutputsOffCommand,
-    },
-    {
-      commandName: "outputs_on",
-      encodeFunction: protocol.encodeOutputsOnCommand,
-    },
-    {
-      commandName: "outputs_switch",
-      encodeFunction: protocol.encodeOutputsSwitchCommand,
-    },
-  ];
-  encodeWrongOutputsChangeCommandTests.forEach(function (test) {
+  encodeOutputsAndZonesChangeCommandTests.forEach(function (test) {
     it(
       "should issue error on wrong " + test.commandName + " message",
       function () {

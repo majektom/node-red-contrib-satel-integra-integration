@@ -54,6 +54,59 @@
         <b>zones_violation</b> and the message payload contains array of flags conveying violation
         state of all inputs. The index of a flag corresponds to the index of an input.
       </li>
+       <li>
+        <dfn>Zones alarm answer [0x02]</dfn> - the output message topic is set to
+        <b>zones_alarm</b> and the message payload contains array of flags conveying alarm
+        state of all inputs. The index of a flag corresponds to the index of an input.
+      </li>
+       <li>
+        <dfn>Zones tamper alarm answer [0x03]</dfn> - the output message topic is set to
+        <b>zones_tamper_alarm</b> and the message payload contains array of flags conveying tamper
+        alarm state of all inputs. The index of a flag corresponds to the index of an input.
+      </li>
+       <li>
+        <dfn>Zones alarm memory answer [0x04]</dfn> - the output message topic is set to
+        <b>zones_alarm_memory</b> and the message payload contains array of flags conveying alarm
+        memory state of all inputs. The index of a flag corresponds to the index of an input.
+      </li>
+       <li>
+        <dfn>Zones tamper alarm memory answer [0x05]</dfn> - the output message topic is set to
+        <b>zones_tamper_alarm_memory</b> and the message payload contains array of flags conveying
+        tamper alarm memory state of all inputs. The index of a flag corresponds to the index of an
+        input.
+      </li>
+       <li>
+        <dfn>Zones bypass status answer [0x06]</dfn> - the output message topic is set to
+        <b>zones_bypass_status</b> and the message payload contains array of flags conveying bypass
+        state of all inputs. The index of a flag corresponds to the index of an input.
+      </li>
+       <li>
+        <dfn>Zones no violation trouble answer [0x07]</dfn> - the output message topic is set to
+        <b>zones_no_violation_trouble</b> and the message payload contains array of flags conveying
+        no violation trouble state of all inputs. The index of a flag corresponds to the index of an
+        input.
+      </li>
+       <li>
+        <dfn>Zones long violation trouble answer [0x08]</dfn> - the output message topic is set to
+        <b>zones_long_violation_trouble</b> and the message payload contains array of flags
+        conveying long violation trouble state of all inputs. The index of a flag corresponds to the
+        index of an input.
+      </li>
+       <li>
+        <dfn>Zones isolate state answer [0x26]</dfn> - the output message topic is set to
+        <b>zones_isolate_state</b> and the message payload contains array of flags conveying isolate
+        state of all inputs. The index of a flag corresponds to the index of an input.
+      </li>
+       <li>
+        <dfn>Zones masked answer [0x28]</dfn> - the output message topic is set to
+        <b>zones_masked</b> and the message payload contains array of flags conveying masked
+        state of all inputs. The index of a flag corresponds to the index of an input.
+      </li>
+       <li>
+        <dfn>Zones masked memory answer [0x29]</dfn> - the output message topic is set to
+        <b>zones_masked_memory</b> and the message payload contains array of flags conveying masked
+        memory state of all inputs. The index of a flag corresponds to the index of an input.
+      </li>
       <li>
         <dfn>Command result answer [0xEF]</dfn> - the output message topic is set to
         <b>command_result</b>. The message payload contains two fields:
