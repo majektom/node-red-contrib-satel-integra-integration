@@ -59,19 +59,12 @@
     The supported message types are:
     <ul>
       <li>
-        <dfn>New data command [0x7F]</dfn> - <code>msg.topic</code> must be set to <b>new_data</b>.
-      </li>
-      <li>
-        <dfn>Outputs state command [0x17]</dfn> - <code>msg.topic</code> must be set to
-        <b>outputs_state</b>.
+        <dfn>Zones violation command [0x00]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_violation</b>.
       </li>
       <li>
         <dfn>Zones tamper command [0x01]</dfn> - <code>msg.topic</code> must be set to
         <b>zones_tamper</b>.
-      </li>
-      <li>
-        <dfn>Zones violation command [0x00]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_violation</b>.
       </li>
       <li>
         <dfn>Zones alarm command [0x02]</dfn> - <code>msg.topic</code> must be set to
@@ -102,6 +95,66 @@
         to <b>zones_long_violation_trouble</b>.
       </li>
       <li>
+        <dfn>Armed partitions suppressed command [0x09]</dfn> - <code>msg.topic</code> must be set
+        to <b>armed_partitions_suppressed</b>.
+      </li>
+      <li>
+        <dfn>Armed partitions really command [0x0A]</dfn> - <code>msg.topic</code> must be set
+        to <b>armed_partitions_really</b>.
+      </li>
+      <li>
+        <dfn>Partitions armed in mode 2 command [0x0B]</dfn> - <code>msg.topic</code> must be set
+        to <b>partitions_armed_in_mode_2</b>.
+      </li>
+      <li>
+        <dfn>Partitions armed in mode 3 command [0x0C]</dfn> - <code>msg.topic</code> must be set
+        to <b>partitions_armed_in_mode_3</b>.
+      </li>
+      <li>
+        <dfn>Partitions with 1st code entered command [0x0D]</dfn> - <code>msg.topic</code> must be
+        set to <b>partitions_with_1st_code_entered</b>.
+      </li>
+      <li>
+        <dfn>Partitions entry time command [0x0E]</dfn> - <code>msg.topic</code> must be set
+        to <b>partitions_entry_time</b>.
+      </li>
+      <li>
+        <dfn>Partitions exit time more then 10s command [0x0F]</dfn> - <code>msg.topic</code> must
+        be set to <b>partitions_exit_time_more_then_10s</b>.
+      </li>
+      <li>
+        <dfn>Partitions exit time less then 10s command [0x10]</dfn> - <code>msg.topic</code> must
+        be set to <b>partitions_exit_time_less_then_10s</b>.
+      </li>
+      <li>
+        <dfn>Partitions temporary blocked command [0x11]</dfn> - <code>msg.topic</code> must be set
+        to <b>partitions_temporary_blocked</b>.
+      </li>
+      <li>
+        <dfn>Partitions blocked for guard round command [0x12]</dfn> - <code>msg.topic</code> must
+        be set to <b>partitions_blocked_for_guard_round</b>.
+      </li>
+      <li>
+        <dfn>Partitions alarm command [0x13]</dfn> - <code>msg.topic</code> must be set
+        to <b>partitions_alarm</b>.
+      </li>
+      <li>
+        <dfn>Partitions fire alarm command [0x14]</dfn> - <code>msg.topic</code> must be set
+        to <b>partitions_fire_alarm</b>.
+      </li>
+      <li>
+        <dfn>Partitions alarm memory command [0x15]</dfn> - <code>msg.topic</code> must be set
+        to <b>partitions_alarm_memory</b>.
+      </li>
+      <li>
+        <dfn>Partitions fire alarm memory command [0x16]</dfn> - <code>msg.topic</code> must be set
+        to <b>partitions_fire_alarm_memory</b>.
+      </li>
+      <li>
+        <dfn>Outputs state command [0x17]</dfn> - <code>msg.topic</code> must be set to
+        <b>outputs_state</b>.
+      </li>
+      <li>
         <dfn>Zones isolate state command [0x26]</dfn> - <code>msg.topic</code> must be set to
         <b>zones_isolate_state</b>.
       </li>
@@ -112,6 +165,103 @@
       <li>
         <dfn>Zones masked memory command [0x29]</dfn> - <code>msg.topic</code> must be set to
         <b>zones_masked_memory</b>.
+      </li>
+      <li>
+        <dfn>New data command [0x7F]</dfn> - <code>msg.topic</code> must be set to <b>new_data</b>.
+      </li>
+      <li>
+        <dfn>Arm in mode 0 command [0x80]</dfn> - <code>msg.topic</code> must be set to
+        <b>arm_in_mode_0</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.partitions</code> - 32 elements long boolean array. Index of an element
+            is equal to index of the partition. Partitions for which their corresponding array
+            element is set to <i>true</i>, will be armed. The other partitions will remain
+            unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Arm in mode 1 command [0x81]</dfn> - <code>msg.topic</code> must be set to
+        <b>arm_in_mode_1</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.partitions</code> - 32 elements long boolean array. Index of an element
+            is equal to index of the partition. Partitions for which their corresponding array
+            element is set to <i>true</i>, will be armed. The other partitions will remain
+            unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Arm in mode 2 command [0x82]</dfn> - <code>msg.topic</code> must be set to
+        <b>arm_in_mode_2</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.partitions</code> - 32 elements long boolean array. Index of an element
+            is equal to index of the partition. Partitions for which their corresponding array
+            element is set to <i>true</i>, will be armed. The other partitions will remain
+            unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Arm in mode 3 command [0x83]</dfn> - <code>msg.topic</code> must be set to
+        <b>arm_in_mode_3</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.partitions</code> - 32 elements long boolean array. Index of an element
+            is equal to index of the partition. Partitions for which their corresponding array
+            element is set to <i>true</i>, will be armed. The other partitions will remain
+            unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Disarm command [0x84]</dfn> - <code>msg.topic</code> must be set to
+        <b>disarm</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.partitions</code> - 32 elements long boolean array. Index of an element
+            is equal to index of the partition. Partitions for which their corresponding array
+            element is set to <i>true</i>, will be disarmed. The other partitions will remain
+            unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Clear alarm command [0x85]</dfn> - <code>msg.topic</code> must be set to
+        <b>clear_alarm</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.partitions</code> - 32 elements long boolean array. Index of an element
+            is equal to index of the partition. Alarm in partitions for which their corresponding
+            array element is set to <i>true</i>, will be cleared. The other partitions will remain
+            unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Zones bypass command [0x86]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_bypass</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.zones</code> - 128 or 256 elements long boolean array. Index of an element
+            is equal to index of the zone. Zones for which their corresponding array element is
+            set to <i>true</i>, will be bypassed. The other zones will remain unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Zones unbypass command [0x87]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_unbypass</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.zones</code> - 128 or 256 elements long boolean array. Index of an element
+            is equal to index of the zone. Zones for which their corresponding array element is
+            set to <i>true</i>, will be unbypassed. The other zones will remain unchanged.
+          </li>
+        </ul>
       </li>
       <li>
         <dfn>Outputs on command [0x88]</dfn> - <code>msg.topic</code> must be set to
@@ -154,6 +304,17 @@
         </ul>
       </li>
       <li>
+        <dfn>Zones isolate command [0x90]</dfn> - <code>msg.topic</code> must be set to
+        <b>zones_isolate</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.zones</code> - 128 or 256 elements long boolean array. Index of an element
+            is equal to index of the zone. Zones for which their corresponding array element is
+            set to <i>true</i>, will be isolated. The other zones will remain unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
         <dfn>Outputs switch command [0x91]</dfn> - <code>msg.topic</code> must be set to
         <b>outputs_switch</b>. Additionally the following properties are mandatory:
         <ul>
@@ -174,35 +335,50 @@
         </ul>
       </li>
       <li>
-        <dfn>Zones bypass command [0x86]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_bypass</b>. Additionally the following properties are mandatory:
+        <dfn>Force arm in mode 0 command [0xA0]</dfn> - <code>msg.topic</code> must be set to
+        <b>force_arm_in_mode_0</b>. Additionally the following properties are mandatory:
         <ul>
           <li>
-            <code>msg.zones</code> - 128 or 256 elements long boolean array. Index of an element
-            is equal to index of the zone. Zones for which their corresponding array element is
-            set to <i>true</i>, will be bypassed. The other zones will remain unchanged.
+            <code>msg.partitions</code> - 32 elements long boolean array. Index of an element
+            is equal to index of the partition. Partitions for which their corresponding array
+            element is set to <i>true</i>, will be armed. The other partitions will remain
+            unchanged.
           </li>
         </ul>
       </li>
       <li>
-        <dfn>Zones unbypass command [0x87]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_unbypass</b>. Additionally the following properties are mandatory:
+        <dfn>Force arm in mode 1 command [0xA1]</dfn> - <code>msg.topic</code> must be set to
+        <b>force_arm_in_mode_1</b>. Additionally the following properties are mandatory:
         <ul>
           <li>
-            <code>msg.zones</code> - 128 or 256 elements long boolean array. Index of an element
-            is equal to index of the zone. Zones for which their corresponding array element is
-            set to <i>true</i>, will be unbypassed. The other zones will remain unchanged.
+            <code>msg.partitions</code> - 32 elements long boolean array. Index of an element
+            is equal to index of the partition. Partitions for which their corresponding array
+            element is set to <i>true</i>, will be armed. The other partitions will remain
+            unchanged.
           </li>
         </ul>
       </li>
       <li>
-        <dfn>Zones isolate command [0x90]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_isolate</b>. Additionally the following properties are mandatory:
+        <dfn>Force arm in mode 2 command [0xA2]</dfn> - <code>msg.topic</code> must be set to
+        <b>force_arm_in_mode_2</b>. Additionally the following properties are mandatory:
         <ul>
           <li>
-            <code>msg.zones</code> - 128 or 256 elements long boolean array. Index of an element
-            is equal to index of the zone. Zones for which their corresponding array element is
-            set to <i>true</i>, will be isolated. The other zones will remain unchanged.
+            <code>msg.partitions</code> - 32 elements long boolean array. Index of an element
+            is equal to index of the partition. Partitions for which their corresponding array
+            element is set to <i>true</i>, will be armed. The other partitions will remain
+            unchanged.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <dfn>Force arm in mode 3 command [0xA3]</dfn> - <code>msg.topic</code> must be set to
+        <b>force_arm_in_mode_3</b>. Additionally the following properties are mandatory:
+        <ul>
+          <li>
+            <code>msg.partitions</code> - 32 elements long boolean array. Index of an element
+            is equal to index of the partition. Partitions for which their corresponding array
+            element is set to <i>true</i>, will be armed. The other partitions will remain
+            unchanged.
           </li>
         </ul>
       </li>

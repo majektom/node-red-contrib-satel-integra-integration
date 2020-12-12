@@ -53,6 +53,62 @@ module.exports = function (RED) {
       ) {
         msg.topic = "zones_long_violation_trouble";
         msg.payload = decoded_msg.flags;
+      } else if (
+        decoded_msg instanceof protocol.ArmedPartitionsSuppressedAnswer
+      ) {
+        msg.topic = "armed_partitions_suppressed";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.ArmedPartitionsReallyAnswer) {
+        msg.topic = "armed_partitions_really";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.PartitionsArmedInMode2Answer) {
+        msg.topic = "partitions_armed_in_mode_2";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.PartitionsArmedInMode3Answer) {
+        msg.topic = "partitions_armed_in_mode_3";
+        msg.payload = decoded_msg.flags;
+      } else if (
+        decoded_msg instanceof protocol.PartitionsWith1stCodeEnteredAnswer
+      ) {
+        msg.topic = "partitions_with_1st_code_entered";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.PartitionsEntryTimeAnswer) {
+        msg.topic = "partitions_entry_time";
+        msg.payload = decoded_msg.flags;
+      } else if (
+        decoded_msg instanceof protocol.PartitionsExitTimeMoreThen10sAnswer
+      ) {
+        msg.topic = "partitions_exit_time_more_then_10s";
+        msg.payload = decoded_msg.flags;
+      } else if (
+        decoded_msg instanceof protocol.PartitionsExitTimeLessThen10sAnswer
+      ) {
+        msg.topic = "partitions_exit_time_less_then_10s";
+        msg.payload = decoded_msg.flags;
+      } else if (
+        decoded_msg instanceof protocol.PartitionsTemporaryBlockedAnswer
+      ) {
+        msg.topic = "partitions_temporary_blocked";
+        msg.payload = decoded_msg.flags;
+      } else if (
+        decoded_msg instanceof protocol.PartitionsBlockedForGuardRoundAnswer
+      ) {
+        msg.topic = "partitions_blocked_for_guard_round";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.PartitionsAlarmAnswer) {
+        msg.topic = "partitions_alarm";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.PartitionsFireAlarmAnswer) {
+        msg.topic = "partitions_fire_alarm";
+        msg.payload = decoded_msg.flags;
+      } else if (decoded_msg instanceof protocol.PartitionsAlarmMemoryAnswer) {
+        msg.topic = "partitions_alarm_memory";
+        msg.payload = decoded_msg.flags;
+      } else if (
+        decoded_msg instanceof protocol.PartitionsFireAlarmMemoryAnswer
+      ) {
+        msg.topic = "partitions_fire_alarm_memory";
+        msg.payload = decoded_msg.flags;
       } else if (decoded_msg instanceof protocol.ZonesIsolateStateAnswer) {
         msg.topic = "zones_isolate_state";
         msg.payload = decoded_msg.flags;

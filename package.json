@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-satel-integra-integration",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Node-red nodes facilitating integration with Satel Integra alarm/home automation system",
   "main": "index.js",
   "scripts": {
@@ -30,7 +30,7 @@
   "author": "Tomasz Maj",
   "license": "MIT",
   "dependencies": {
-    "satel-integra-integration-protocol": "^0.6.0"
+    "satel-integra-integration-protocol": "^1.0.1"
   },
   "devDependencies": {
     "coveralls": "^3.1.0",

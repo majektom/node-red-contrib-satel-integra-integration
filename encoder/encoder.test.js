@@ -219,6 +219,62 @@ describe("satel-integra-encoder Node", function () {
       expectedPayload: protocol.encodeZonesLongViolationTroubleCommand(),
     },
     {
+      commandName: "armed_partitions_suppressed",
+      expectedPayload: protocol.encodeArmedPartitionsSuppressedCommand(),
+    },
+    {
+      commandName: "armed_partitions_really",
+      expectedPayload: protocol.encodeArmedPartitionsReallyCommand(),
+    },
+    {
+      commandName: "partitions_armed_in_mode_2",
+      expectedPayload: protocol.encodePartitionsArmedInMode2Command(),
+    },
+    {
+      commandName: "partitions_armed_in_mode_3",
+      expectedPayload: protocol.encodePartitionsArmedInMode3Command(),
+    },
+    {
+      commandName: "partitions_with_1st_code_entered",
+      expectedPayload: protocol.encodePartitionsWith1stCodeEnteredCommand(),
+    },
+    {
+      commandName: "partitions_entry_time",
+      expectedPayload: protocol.encodePartitionsEntryTimeCommand(),
+    },
+    {
+      commandName: "partitions_exit_time_more_then_10s",
+      expectedPayload: protocol.encodePartitionsExitTimeMoreThen10sCommand(),
+    },
+    {
+      commandName: "partitions_exit_time_less_then_10s",
+      expectedPayload: protocol.encodePartitionsExitTimeLessThen10sCommand(),
+    },
+    {
+      commandName: "partitions_temporary_blocked",
+      expectedPayload: protocol.encodePartitionsTemporaryBlockedCommand(),
+    },
+    {
+      commandName: "partitions_blocked_for_guard_round",
+      expectedPayload: protocol.encodePartitionsBlockedForGuardRoundCommand(),
+    },
+    {
+      commandName: "partitions_alarm",
+      expectedPayload: protocol.encodePartitionsAlarmCommand(),
+    },
+    {
+      commandName: "partitions_fire_alarm",
+      expectedPayload: protocol.encodePartitionsFireAlarmCommand(),
+    },
+    {
+      commandName: "partitions_alarm_memory",
+      expectedPayload: protocol.encodePartitionsAlarmMemoryCommand(),
+    },
+    {
+      commandName: "partitions_fire_alarm_memory",
+      expectedPayload: protocol.encodePartitionsFireAlarmMemoryCommand(),
+    },
+    {
       commandName: "zones_isolate_state",
       expectedPayload: protocol.encodeZonesIsolateStateCommand(),
     },
@@ -450,78 +506,195 @@ describe("satel-integra-encoder Node", function () {
     );
   });
 
-  encodeOutputsAndZonesChangeCommandTests.forEach(function (test) {
-    it(
-      "should issue error on wrong " + test.commandName + " message",
-      function () {
-        return new Promise(function (resolve, reject) {
-          const flow = [
-            { id: "user1", type: "satel-integra-user", name: "User Name" },
-            {
-              id: "prefix1",
-              type: "satel-integra-security_prefix",
-              name: "Prefix Name",
-            },
-            { id: "flow1", type: "tab", label: "Test flow" },
-            {
-              id: "encoder1",
-              z: "flow1",
-              type: "satel-integra-encoder",
-              name: "Encoder",
-              wires: [["helper1"]],
-            },
-            { id: "helper1", z: "flow1", type: "helper" },
-            { id: "helper2", z: "flow1", type: "helper" },
-            { id: "catch1", z: "flow1", type: "catch", wires: [["helper2"]] },
-          ];
-          const credentials = {
-            user1: { code: "654321" },
-            prefix1: { prefix: "09876" },
-          };
-          helper
-            .load(
-              [encoder, user, security_prefix, catchNode],
-              flow,
-              function () {
-                const encoderNode = helper.getNode("encoder1");
-                const helper1Node = helper.getNode("helper1");
-                const helper2Node = helper.getNode("helper2");
-                helper1Node.on("input", function (msg) {
-                  try {
-                    assert.fail("message should have been discarded");
-                  } catch (error) {
-                    reject(error);
-                  }
-                });
-                helper2Node.on("input", function (msg) {
-                  try {
-                    msg.should.have.property("topic", test.commandName);
-                    assert(
-                      msg.error.message.startsWith(
-                        test.commandName + " command encoding error"
-                      )
-                    );
-                    msg.error.should.have.property("source", {
-                      id: "encoder1",
-                      type: "satel-integra-encoder",
-                      name: "Encoder",
-                      count: 1,
-                    });
-                    resolve();
-                  } catch (error) {
-                    reject(error);
-                  }
-                });
-                encoderNode.receive({
-                  topic: test.commandName,
-                });
-              }
-            )
-            .catch(function (reason) {
-              reject(reason);
-            });
-        });
-      }
-    );
+  const encodePartitionsChangeCommandTests = [
+    {
+      commandName: "arm_in_mode_0",
+      encodeFunction: protocol.encodeArmInMode0Command,
+    },
+    {
+      commandName: "arm_in_mode_1",
+      encodeFunction: protocol.encodeArmInMode1Command,
+    },
+    {
+      commandName: "arm_in_mode_2",
+      encodeFunction: protocol.encodeArmInMode2Command,
+    },
+    {
+      commandName: "arm_in_mode_3",
+      encodeFunction: protocol.encodeArmInMode3Command,
+    },
+    {
+      commandName: "disarm",
+      encodeFunction: protocol.encodeDisarmCommand,
+    },
+    {
+      commandName: "clear_alarm",
+      encodeFunction: protocol.encodeClearAlarmCommand,
+    },
+    {
+      commandName: "force_arm_in_mode_0",
+      encodeFunction: protocol.encodeForceArmInMode0Command,
+    },
+    {
+      commandName: "force_arm_in_mode_1",
+      encodeFunction: protocol.encodeForceArmInMode1Command,
+    },
+    {
+      commandName: "force_arm_in_mode_2",
+      encodeFunction: protocol.encodeForceArmInMode2Command,
+    },
+    {
+      commandName: "force_arm_in_mode_3",
+      encodeFunction: protocol.encodeForceArmInMode3Command,
+    },
+  ];
+
+  encodePartitionsChangeCommandTests.forEach(function (test) {
+    it("should properly encode " + test.commandName + " command", function () {
+      return new Promise(function (resolve, reject) {
+        const flagsArray = new Array(32)
+          .fill(false)
+          .fill(true, 3, 4)
+          .fill(true, 29, 30);
+        const flow = [
+          { id: "user1", type: "satel-integra-user", name: "User Name" },
+          {
+            id: "prefix1",
+            type: "satel-integra-security_prefix",
+            name: "Prefix Name",
+          },
+          { id: "flow1", type: "tab", label: "Test flow" },
+          {
+            id: "encoder1",
+            z: "flow1",
+            type: "satel-integra-encoder",
+            name: "Encoder",
+            user: "user1",
+            prefix: "prefix1",
+            wires: [["helper1"]],
+          },
+          { id: "helper1", z: "flow1", type: "helper" },
+          { id: "helper2", z: "flow1", type: "helper" },
+          { id: "catch1", z: "flow1", type: "catch", wires: [["helper2"]] },
+        ];
+        const credentials = {
+          user1: { code: "654321" },
+          prefix1: { prefix: "09876" },
+        };
+        helper
+          .load(
+            [encoder, user, security_prefix, catchNode],
+            flow,
+            credentials,
+            function () {
+              const encoderNode = helper.getNode("encoder1");
+              const helper1Node = helper.getNode("helper1");
+              const helper2Node = helper.getNode("helper2");
+              helper1Node.on("input", function (msg) {
+                try {
+                  msg.should.have.property("topic", test.commandName);
+                  msg.should.have.property(
+                    "payload",
+                    test.encodeFunction("09876654321fffff", flagsArray)
+                  );
+                  resolve();
+                } catch (error) {
+                  reject(error);
+                }
+              });
+              helper2Node.on("input", function (msg) {
+                reject(msg.error);
+              });
+              const msg = {
+                topic: test.commandName,
+                // This deprecated field should be ignored and superseded by code and prefix parameters
+                prefixAndUserCode: "87654321ffffffff",
+              };
+              msg.partitions = flagsArray;
+              encoderNode.receive(msg);
+            }
+          )
+          .catch(function (reason) {
+            reject(reason);
+          });
+      });
+    });
   });
+
+  encodeOutputsAndZonesChangeCommandTests
+    .concat(encodePartitionsChangeCommandTests)
+    .forEach(function (test) {
+      it(
+        "should issue error on wrong " + test.commandName + " message",
+        function () {
+          return new Promise(function (resolve, reject) {
+            const flow = [
+              { id: "user1", type: "satel-integra-user", name: "User Name" },
+              {
+                id: "prefix1",
+                type: "satel-integra-security_prefix",
+                name: "Prefix Name",
+              },
+              { id: "flow1", type: "tab", label: "Test flow" },
+              {
+                id: "encoder1",
+                z: "flow1",
+                type: "satel-integra-encoder",
+                name: "Encoder",
+                wires: [["helper1"]],
+              },
+              { id: "helper1", z: "flow1", type: "helper" },
+              { id: "helper2", z: "flow1", type: "helper" },
+              { id: "catch1", z: "flow1", type: "catch", wires: [["helper2"]] },
+            ];
+            const credentials = {
+              user1: { code: "654321" },
+              prefix1: { prefix: "09876" },
+            };
+            helper
+              .load(
+                [encoder, user, security_prefix, catchNode],
+                flow,
+                function () {
+                  const encoderNode = helper.getNode("encoder1");
+                  const helper1Node = helper.getNode("helper1");
+                  const helper2Node = helper.getNode("helper2");
+                  helper1Node.on("input", function (msg) {
+                    try {
+                      assert.fail("message should have been discarded");
+                    } catch (error) {
+                      reject(error);
+                    }
+                  });
+                  helper2Node.on("input", function (msg) {
+                    try {
+                      msg.should.have.property("topic", test.commandName);
+                      assert(
+                        msg.error.message.startsWith(
+                          test.commandName + " command encoding error"
+                        )
+                      );
+                      msg.error.should.have.property("source", {
+                        id: "encoder1",
+                        type: "satel-integra-encoder",
+                        name: "Encoder",
+                        count: 1,
+                      });
+                      resolve();
+                    } catch (error) {
+                      reject(error);
+                    }
+                  });
+                  encoderNode.receive({
+                    topic: test.commandName,
+                  });
+                }
+              )
+              .catch(function (reason) {
+                reject(reason);
+              });
+          });
+        }
+      );
+    });
 });

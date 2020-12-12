@@ -259,6 +259,62 @@ describe("satel-integra-decoder Node", function () {
       answerMessage: protocol.ZonesLongViolationTroubleAnswer,
     },
     {
+      messageTopic: "armed_partitions_suppressed",
+      answerMessage: protocol.ArmedPartitionsSuppressedAnswer,
+    },
+    {
+      messageTopic: "armed_partitions_really",
+      answerMessage: protocol.ArmedPartitionsReallyAnswer,
+    },
+    {
+      messageTopic: "partitions_armed_in_mode_2",
+      answerMessage: protocol.PartitionsArmedInMode2Answer,
+    },
+    {
+      messageTopic: "partitions_armed_in_mode_3",
+      answerMessage: protocol.PartitionsArmedInMode3Answer,
+    },
+    {
+      messageTopic: "partitions_with_1st_code_entered",
+      answerMessage: protocol.PartitionsWith1stCodeEnteredAnswer,
+    },
+    {
+      messageTopic: "partitions_entry_time",
+      answerMessage: protocol.PartitionsEntryTimeAnswer,
+    },
+    {
+      messageTopic: "partitions_exit_time_more_then_10s",
+      answerMessage: protocol.PartitionsExitTimeMoreThen10sAnswer,
+    },
+    {
+      messageTopic: "partitions_exit_time_less_then_10s",
+      answerMessage: protocol.PartitionsExitTimeLessThen10sAnswer,
+    },
+    {
+      messageTopic: "partitions_temporary_blocked",
+      answerMessage: protocol.PartitionsTemporaryBlockedAnswer,
+    },
+    {
+      messageTopic: "partitions_blocked_for_guard_round",
+      answerMessage: protocol.PartitionsBlockedForGuardRoundAnswer,
+    },
+    {
+      messageTopic: "partitions_alarm",
+      answerMessage: protocol.PartitionsAlarmAnswer,
+    },
+    {
+      messageTopic: "partitions_fire_alarm",
+      answerMessage: protocol.PartitionsFireAlarmAnswer,
+    },
+    {
+      messageTopic: "partitions_alarm_memory",
+      answerMessage: protocol.PartitionsAlarmMemoryAnswer,
+    },
+    {
+      messageTopic: "partitions_fire_alarm_memory",
+      answerMessage: protocol.PartitionsFireAlarmMemoryAnswer,
+    },
+    {
       messageTopic: "zones_isolate_state",
       answerMessage: protocol.ZonesIsolateStateAnswer,
     },

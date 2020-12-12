@@ -40,9 +40,9 @@
         </a> on how to relate a flag to its command.
       </li>
       <li>
-        <dfn>Outputs state answer [0x17]</dfn> - the output message topic is set to
-        <b>outputs_state</b> and the message payload contains array of flags conveying state of all
-        outputs. The index of a flag corresponds to the index of an output.
+        <dfn>Zones violation answer [0x00]</dfn> - the output message topic is set to
+        <b>zones_violation</b> and the message payload contains array of flags conveying violation
+        state of all inputs. The index of a flag corresponds to the index of an input.
       </li>
       <li>
         <dfn>Zones tamper answer [0x01]</dfn> - the message topic is set to <b>zones_tamper</b> and
@@ -50,59 +50,143 @@
         of a flag corresponds to the index of an input.
       </li>
       <li>
-        <dfn>Zones violation answer [0x00]</dfn> - the output message topic is set to
-        <b>zones_violation</b> and the message payload contains array of flags conveying violation
-        state of all inputs. The index of a flag corresponds to the index of an input.
-      </li>
-       <li>
         <dfn>Zones alarm answer [0x02]</dfn> - the output message topic is set to
         <b>zones_alarm</b> and the message payload contains array of flags conveying alarm
         state of all inputs. The index of a flag corresponds to the index of an input.
       </li>
-       <li>
+      <li>
         <dfn>Zones tamper alarm answer [0x03]</dfn> - the output message topic is set to
         <b>zones_tamper_alarm</b> and the message payload contains array of flags conveying tamper
         alarm state of all inputs. The index of a flag corresponds to the index of an input.
       </li>
-       <li>
+      <li>
         <dfn>Zones alarm memory answer [0x04]</dfn> - the output message topic is set to
         <b>zones_alarm_memory</b> and the message payload contains array of flags conveying alarm
         memory state of all inputs. The index of a flag corresponds to the index of an input.
       </li>
-       <li>
+      <li>
         <dfn>Zones tamper alarm memory answer [0x05]</dfn> - the output message topic is set to
         <b>zones_tamper_alarm_memory</b> and the message payload contains array of flags conveying
         tamper alarm memory state of all inputs. The index of a flag corresponds to the index of an
         input.
       </li>
-       <li>
+      <li>
         <dfn>Zones bypass status answer [0x06]</dfn> - the output message topic is set to
         <b>zones_bypass_status</b> and the message payload contains array of flags conveying bypass
         state of all inputs. The index of a flag corresponds to the index of an input.
       </li>
-       <li>
+      <li>
         <dfn>Zones no violation trouble answer [0x07]</dfn> - the output message topic is set to
         <b>zones_no_violation_trouble</b> and the message payload contains array of flags conveying
         no violation trouble state of all inputs. The index of a flag corresponds to the index of an
         input.
       </li>
-       <li>
+      <li>
         <dfn>Zones long violation trouble answer [0x08]</dfn> - the output message topic is set to
         <b>zones_long_violation_trouble</b> and the message payload contains array of flags
         conveying long violation trouble state of all inputs. The index of a flag corresponds to the
         index of an input.
       </li>
-       <li>
+      <li>
+        <dfn>Armed partitions suppressed answer [0x09]</dfn> - the output message topic is set to
+        <b>armed_partitions_suppressed</b> and the message payload contains array of flags
+        conveying armed partitions (suppressed) state. The index of a flag corresponds to the
+        index of a partition.
+      </li>
+      <li>
+        <dfn>Armed partitions really answer [0x0A]</dfn> - the output message topic is set to
+        <b>armed_partitions_really</b> and the message payload contains array of flags
+        conveying armed partitions (really) state. The index of a flag corresponds to the
+        index of a partition.
+      </li>
+      <li>
+        <dfn>Partitions armed in mode 2 answer [0x0B]</dfn> - the output message topic is set to
+        <b>partitions_armed_in_mode_2</b> and the message payload contains array of flags
+        conveying partitions armed in mode 2 state. The index of a flag corresponds to the
+        index of a partition.
+      </li>
+      <li>
+        <dfn>Partitions armed in mode 3 answer [0x0C]</dfn> - the output message topic is set to
+        <b>partitions_armed_in_mode_3</b> and the message payload contains array of flags
+        conveying partitions armed in mode 3 state. The index of a flag corresponds to the
+        index of a partition.
+      </li>
+      <li>
+        <dfn>Partitions with 1st code entered answer [0x0D]</dfn> - the output message topic is set
+        to <b>partitions_with_1st_code_entered</b> and the message payload contains array of flags
+        conveying partitions with 1st code entered state. The index of a flag corresponds to the
+        index of a partition.
+      </li>
+      <li>
+        <dfn>Partitions entry time answer [0x0E]</dfn> - the output message topic is set to
+        <b>partitions_entry_time</b> and the message payload contains array of flags
+        conveying partitions entry time state. The index of a flag corresponds to the
+        index of a partition.
+      </li>
+      <li>
+        <dfn>Partitions exit time more then 10s answer [0x0F]</dfn> - the output message topic is
+        set to <b>partitions_exit_time_more_then_10s</b> and the message payload contains array of
+        flags conveying partitions exit time more then 10s state. The index of a flag corresponds to
+        the index of a partition.
+      </li>
+      <li>
+        <dfn>Partitions exit time less then 10s answer [0x10]</dfn> - the output message topic is
+        set to <b>partitions_exit_time_less_then_10s</b> and the message payload contains array of
+        flags conveying partitions exit time less then 10s state. The index of a flag corresponds to
+        the index of a partition.
+      </li>
+      <li>
+        <dfn>Partitions temporary blocked answer [0x11]</dfn> - the output message topic is set to
+        <b>partitions_temporary_blocked</b> and the message payload contains array of flags
+        conveying partitions temporary blocked state. The index of a flag corresponds to the
+        index of a partition.
+      </li>
+      <li>
+        <dfn>Partitions blocked for guard round answer [0x12]</dfn> - the output message topic is
+        set to <b>partitions_blocked_for_guard_round</b> and the message payload contains array of
+        flags conveying partitions blocked for guard round state. The index of a flag corresponds to
+        the index of a partition.
+      </li>
+      <li>
+        <dfn>Partitions alarm answer [0x13]</dfn> - the output message topic is set to
+        <b>partitions_alarm</b> and the message payload contains array of flags
+        conveying partitions alarm state. The index of a flag corresponds to the
+        index of a partition.
+      </li>
+      <li>
+        <dfn>Partitions fire alarm answer [0x14]</dfn> - the output message topic is set to
+        <b>partitions_fire_alarm</b> and the message payload contains array of flags
+        conveying partitions fire alarm state. The index of a flag corresponds to the
+        index of a partition.
+      </li>
+      <li>
+        <dfn>Partitions alarm memory answer [0x15]</dfn> - the output message topic is set to
+        <b>partitions_alarm_memory</b> and the message payload contains array of flags
+        conveying partitions alarm memory state. The index of a flag corresponds to the
+        index of a partition.
+      </li>
+      <li>
+        <dfn>Partitions fire alarm memory answer [0x16]</dfn> - the output message topic is set to
+        <b>partitions_fire_alarm_memory</b> and the message payload contains array of flags
+        conveying partitions fire alarm memory state. The index of a flag corresponds to the
+        index of a partition.
+      </li>
+      <li>
+        <dfn>Outputs state answer [0x17]</dfn> - the output message topic is set to
+        <b>outputs_state</b> and the message payload contains array of flags conveying state of all
+        outputs. The index of a flag corresponds to the index of an output.
+      </li>
+      <li>
         <dfn>Zones isolate state answer [0x26]</dfn> - the output message topic is set to
         <b>zones_isolate_state</b> and the message payload contains array of flags conveying isolate
         state of all inputs. The index of a flag corresponds to the index of an input.
       </li>
-       <li>
+      <li>
         <dfn>Zones masked answer [0x28]</dfn> - the output message topic is set to
         <b>zones_masked</b> and the message payload contains array of flags conveying masked
         state of all inputs. The index of a flag corresponds to the index of an input.
       </li>
-       <li>
+      <li>
         <dfn>Zones masked memory answer [0x29]</dfn> - the output message topic is set to
         <b>zones_masked_memory</b> and the message payload contains array of flags conveying masked
         memory state of all inputs. The index of a flag corresponds to the index of an input.

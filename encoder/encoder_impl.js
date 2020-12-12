@@ -19,6 +19,14 @@ function encodeZonesChangeCommand(msg, encodeFunction, prefixAndUserCode) {
   }
 }
 
+function encodePartitionsChangeCommand(msg, encodeFunction, prefixAndUserCode) {
+  try {
+    msg.payload = encodeFunction(prefixAndUserCode, msg.partitions);
+  } catch (error) {
+    throw msg.topic + " command encoding error: " + error;
+  }
+}
+
 function getPrefixAndUserCode(userNode, prefixNode) {
   let prefixAndUserCode;
   if (userNode && userNode.credentials && userNode.credentials.code) {
@@ -39,6 +47,7 @@ function getPrefixAndUserCode(userNode, prefixNode) {
 
 module.exports = {
   encodeOutputsChangeCommand,
+  encodePartitionsChangeCommand,
   encodeZonesChangeCommand,
   getPrefixAndUserCode,
 };
