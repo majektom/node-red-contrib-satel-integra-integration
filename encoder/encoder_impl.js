@@ -7,7 +7,7 @@ function encodeOutputsChangeCommand(msg, encodeFunction, prefixAndUserCode) {
     }
     msg.payload = encodeFunction(prefixAndUserCode, msg.outputs);
   } catch (error) {
-    throw msg.topic + " command encoding error: " + error;
+    throw new Error(msg.topic + " command encoding error: " + error);
   }
 }
 
@@ -15,7 +15,7 @@ function encodeZonesChangeCommand(msg, encodeFunction, prefixAndUserCode) {
   try {
     msg.payload = encodeFunction(prefixAndUserCode, msg.zones);
   } catch (error) {
-    throw msg.topic + " command encoding error: " + error;
+    throw new Error(msg.topic + " command encoding error: " + error);
   }
 }
 
@@ -23,7 +23,7 @@ function encodePartitionsChangeCommand(msg, encodeFunction, prefixAndUserCode) {
   try {
     msg.payload = encodeFunction(prefixAndUserCode, msg.partitions);
   } catch (error) {
-    throw msg.topic + " command encoding error: " + error;
+    throw new Error(msg.topic + " command encoding error: " + error);
   }
 }
 

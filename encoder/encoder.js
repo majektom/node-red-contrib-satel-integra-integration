@@ -10,7 +10,7 @@ module.exports = function (RED) {
     node.on("input", function (msg, send, done) {
       try {
         if (!msg.topic) {
-          throw "message without topic";
+          throw new Error("message without topic");
         }
         if (msg.topic == "new_data") {
           msg.payload = protocol.encodeNewDataCommand();
@@ -165,7 +165,7 @@ module.exports = function (RED) {
             impl.getPrefixAndUserCode(node.userNode, node.prefixNode)
           );
         } else {
-          throw "unsupported message topic: '" + msg.topic + "'";
+          throw new Error("unsupported message topic: '" + msg.topic + "'");
         }
         /* istanbul ignore else: the else path can be reached with old node-red versions only */
         if (send) {

@@ -1,4 +1,3 @@
-const assert = require("assert");
 const user = require("./user.js");
 const helper = require("node-red-node-test-helper");
 

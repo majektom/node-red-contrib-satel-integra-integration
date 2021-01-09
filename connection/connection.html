@@ -1,0 +1,114 @@
+<script type="text/javascript">
+  RED.nodes.registerType("satel-integra-connection", {
+    category: "function",
+    color: "#c0c0c0",
+    defaults: {
+      name: { required: false },
+      server_address: { required: true },
+      server_port: {
+        value: "7094",
+        required: true,
+        validate: RED.validators.number(),
+      },
+      encryption: { value: false, required: true },
+      max_message_queue_size: {
+        value: 32,
+        required: true,
+        validate: RED.validators.number(),
+      },
+    },
+    credentials: {
+      encryption_key: {
+        value: "",
+        type: "password",
+        required: true,
+        validate: RED.validators.regex(/^\S{1,12}$/),
+      },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "function.png",
+    label: function () {
+      return this.name || "Satel Integra connection";
+    },
+    oneditprepare: function () {
+      $("#node-input-encryption").on("change", function () {
+        if ($("#node-input-encryption").prop("checked")) {
+          $(".node-input-encryption_key-group").show();
+        } else {
+          $(".node-input-encryption_key-group").hide();
+        }
+      });
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="satel-integra-connection">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-bookmark"></i> Name</label>
+    <input type="text" id="node-input-name">
+  </div>
+  <div class="form-row">
+    <label for="node-input-server_address"><i class="fa fa-bookmark"></i>
+      Server address
+    </label>
+    <input type="text" id="node-input-server_address">
+  </div>
+  <div class="form-row">
+    <label for="node-input-server_port"><i class="fa fa-bookmark"></i> Server port</label>
+    <input type="text" id="node-input-server_port">
+  </div>
+  <div class="form-row">
+    <label for="node-input-encryption"><i class="fa fa-bookmark"></i> Encryption</label>
+    <input type="checkbox" id="node-input-encryption" style="width: 30px;">
+  </div>
+  <div class="form-row node-input-encryption_key-group" title="The key used to encrypt
+    transmission. Must be a string consisting of at least 1 and at most 12 alphanumeric
+    characters." hidden>
+    <label for="node-input-encryption_key"><i class="fa fa-bookmark"></i> Encryption key</label>
+    <input type="password" id="node-input-encryption_key">
+  </div>
+  <div class="form-row">
+    <label for="node-input-max_message_queue_size"><i class="fa fa-bookmark"></i>
+      Max message queue size
+    </label>
+    <input type="text" id="node-input-max_message_queue_size">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="satel-integra-connection">
+  <p>
+    A node that establishes TCP connection with the Satel module, sends frames from
+    <code>msg.payload</code> property of input messages and expects a response. The response,
+    if forms a valid protocol frame, is then sent as Buffer in the <code>msg.payload</code> property
+    of the outgoing message. The node supports optional encryption of the transmission in the TCP
+    channel. If the encryption is not used, the node could be replaced with the standard tcp request
+    node. Nevertheless, this node is preferred over the standard tcp request node, even if
+    non-encrypted transmission is being used, because it queues subsequent incoming messages and
+    delays sending of the next message in the queue until the last sent message got answered or
+    2 seconds elapsed.
+  </p>
+  <p>
+    Properties:
+    <ul>
+      <li>
+        <b>Server address</b> - address of the Statel module.
+      </li>
+      <li>
+        <b>Port</b> - port on which the Satel module exposes the integration server.
+      </li>
+      <li>
+        <b>Encryption</b> - if checked, transmission will be encrypted.
+      </li>
+      <li>
+        <b>Encryption key</b> - the key being used to encrypt transmission between the node and the
+        Satel module. Must be a string consisting of at least 1 and at most 12 alphanumeric
+        characters.
+      </li>
+      <li>
+        <b>Max message queue size</b> - the maximum size of the queue storing messages waiting to
+        be sent. If the maximum size is exceeded, the oldest message in the queue is abandoned.
+      </li>
+    </ul>
+  </p>
+</script>

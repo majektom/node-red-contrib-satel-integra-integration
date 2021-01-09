@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-satel-integra-integration",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Node-red nodes facilitating integration with Satel Integra alarm/home automation system",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,7 @@
   },
   "node-red": {
     "nodes": {
+      "connection": "connection/connection.js",
       "decoder": "decoder/decoder.js",
       "encoder": "encoder/encoder.js",
       "security_prefix": "security_prefix/security_prefix.js",

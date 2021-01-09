@@ -1,4 +1,3 @@
-const assert = require("assert");
 const catchNode = require("@node-red/nodes/core/common/25-catch");
 const decoder = require("./decoder.js");
 const helper = require("node-red-node-test-helper");
@@ -56,11 +55,7 @@ describe("satel-integra-decoder Node", function () {
         const helperNode1 = helper.getNode("n2");
         const helperNode2 = helper.getNode("n3");
         helperNode1.on("input", function (msg) {
-          try {
-            assert.fail("message should have been discarded");
-          } catch (error) {
-            reject(error);
-          }
+          reject(new Error("message should have been discarded"));
         });
         helperNode2.on("input", function (msg) {
           try {
@@ -79,8 +74,6 @@ describe("satel-integra-decoder Node", function () {
         });
         decoderNode.receive({});
       });
-    }).catch(function (error) {
-      assert.fail(error);
     });
   });
 
@@ -105,11 +98,7 @@ describe("satel-integra-decoder Node", function () {
         const helperNode1 = helper.getNode("n2");
         const helperNode2 = helper.getNode("n3");
         helperNode1.on("input", function (msg) {
-          try {
-            assert.fail("message should have been discarded");
-          } catch (error) {
-            reject(error);
-          }
+          reject(new Error("message should have been discarded"));
         });
         helperNode2.on("input", function (msg) {
           try {
@@ -128,8 +117,6 @@ describe("satel-integra-decoder Node", function () {
         });
         decoderNode.receive({ payload: "payload" });
       });
-    }).catch(function (error) {
-      assert.fail(error);
     });
   });
 
@@ -154,11 +141,7 @@ describe("satel-integra-decoder Node", function () {
         const helperNode1 = helper.getNode("n2");
         const helperNode2 = helper.getNode("n3");
         helperNode1.on("input", function (msg) {
-          try {
-            assert.fail("message should have been discarded");
-          } catch (error) {
-            reject(error);
-          }
+          reject(new Error("message should have been discarded"));
         });
         helperNode2.on("input", function (msg) {
           try {
@@ -177,8 +160,6 @@ describe("satel-integra-decoder Node", function () {
         });
         decoderNode.receive({ payload: Buffer.from([0x01, 0x02, 0x03]) });
       });
-    }).catch(function (error) {
-      assert.fail(error);
     });
   });
 
@@ -357,8 +338,6 @@ describe("satel-integra-decoder Node", function () {
           });
           decoderNode.receive({ payload: Buffer.from([0x01, 0x02, 0x03]) });
         });
-      }).catch(function (error) {
-        assert.fail(error);
       });
     });
   });
@@ -397,8 +376,6 @@ describe("satel-integra-decoder Node", function () {
         });
         decoderNode.receive({ payload: Buffer.from([0x01, 0x02, 0x03]) });
       });
-    }).catch(function (error) {
-      assert.fail(error);
     });
   });
 });

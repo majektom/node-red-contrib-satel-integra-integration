@@ -1,4 +1,3 @@
-const assert = require("assert");
 const catchNode = require("@node-red/nodes/core/common/25-catch");
 const encoder = require("./encoder.js");
 const user = require("../user/user.js");
@@ -86,11 +85,7 @@ describe("satel-integra-encoder Node", function () {
           const helper1Node = helper.getNode("helper1");
           const helper2Node = helper.getNode("helper2");
           helper1Node.on("input", function (msg) {
-            try {
-              assert.fail("message should have been discarded");
-            } catch (error) {
-              reject(error);
-            }
+            reject(new Error("message should have been discarded"));
           });
           helper2Node.on("input", function (msg) {
             try {
@@ -144,11 +139,7 @@ describe("satel-integra-encoder Node", function () {
           const helper1Node = helper.getNode("helper1");
           const helper2Node = helper.getNode("helper2");
           helper1Node.on("input", function (msg) {
-            try {
-              assert.fail("message should have been discarded");
-            } catch (error) {
-              reject(error);
-            }
+            reject(new Error("message should have been discarded"));
           });
           helper2Node.on("input", function (msg) {
             try {
@@ -660,19 +651,15 @@ describe("satel-integra-encoder Node", function () {
                   const helper1Node = helper.getNode("helper1");
                   const helper2Node = helper.getNode("helper2");
                   helper1Node.on("input", function (msg) {
-                    try {
-                      assert.fail("message should have been discarded");
-                    } catch (error) {
-                      reject(error);
-                    }
+                    reject(new Error("message should have been discarded"));
                   });
                   helper2Node.on("input", function (msg) {
                     try {
                       msg.should.have.property("topic", test.commandName);
-                      assert(
-                        msg.error.message.startsWith(
-                          test.commandName + " command encoding error"
-                        )
+                      msg.should.have.property("error");
+                      msg.error.should.have.property("message");
+                      msg.error.message.should.match(
+                        new RegExp(test.commandName + " command encoding error")
                       );
                       msg.error.should.have.property("source", {
                         id: "encoder1",

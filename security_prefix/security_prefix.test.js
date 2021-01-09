@@ -1,4 +1,3 @@
-const assert = require("assert");
 const security_prefix = require("./security_prefix.js");
 const helper = require("node-red-node-test-helper");
 
