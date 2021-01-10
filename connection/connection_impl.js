@@ -8,7 +8,7 @@ function decrypt(frame, cipherKey) {
     .update(Buffer.alloc(16, 0));
   while (count >= 16) {
     const index = frame.length - count;
-    const subFrame = frame.subarray(index, 16);
+    const subFrame = frame.subarray(index, index + 16);
     const encryptedSubFrame = Buffer.from(subFrame);
     crypto
       .createDecipheriv("aes-192-ecb", cipherKey, null)
@@ -38,7 +38,7 @@ function encrypt(frame, cipherKey) {
     .update(Buffer.alloc(16, 0));
   while (count >= 16) {
     const index = frame.length - count;
-    const subFrame = frame.subarray(index, 16);
+    const subFrame = frame.subarray(index, index + 16);
     for (i = 0; i < 16; ++i) {
       subFrame[i] ^= cv[i];
     }
