@@ -1,0 +1,309 @@
+[
+    {
+        "id": "e6b0a445.412a38",
+        "type": "tab",
+        "label": "Set output and get its state example",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "676de317.d5b64c",
+        "type": "satel-integra-encoder",
+        "z": "e6b0a445.412a38",
+        "name": "Encode",
+        "user": "2c6f5b4e.dc1a8c",
+        "prefix": "",
+        "x": 480,
+        "y": 200,
+        "wires": [
+            [
+                "6c367b6.f6e8b04"
+            ]
+        ]
+    },
+    {
+        "id": "a3668de5.0418a8",
+        "type": "satel-integra-decoder",
+        "z": "e6b0a445.412a38",
+        "name": "Decode",
+        "x": 860,
+        "y": 200,
+        "wires": [
+            [
+                "bc8368f.d891718"
+            ]
+        ]
+    },
+    {
+        "id": "6c367b6.f6e8b04",
+        "type": "satel-integra-connection",
+        "z": "e6b0a445.412a38",
+        "name": "",
+        "server_address": "192.168.1.4",
+        "server_port": "7094",
+        "encryption": false,
+        "max_message_queue_size": "128",
+        "x": 670,
+        "y": 200,
+        "wires": [
+            [
+                "a3668de5.0418a8"
+            ]
+        ]
+    },
+    {
+        "id": "512e2634.ce62c",
+        "type": "inject",
+        "z": "e6b0a445.412a38",
+        "name": "new_data command",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "5",
+        "topic": "new_data",
+        "x": 280,
+        "y": 200,
+        "wires": [
+            [
+                "676de317.d5b64c"
+            ]
+        ]
+    },
+    {
+        "id": "bc8368f.d891718",
+        "type": "switch",
+        "z": "e6b0a445.412a38",
+        "name": "Answer switch",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "new_data",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "outputs_state",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 1020,
+        "y": 200,
+        "wires": [
+            [
+                "c6605072.11349"
+            ],
+            [
+                "30c88e9.8160bf2"
+            ]
+        ]
+    },
+    {
+        "id": "c6605072.11349",
+        "type": "switch",
+        "z": "e6b0a445.412a38",
+        "name": "outputs_state switch",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "jsonata_exp",
+                "v": "payload[23]",
+                "vt": "jsonata"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 600,
+        "y": 100,
+        "wires": [
+            [
+                "48638c6.a4ec474"
+            ]
+        ],
+        "outputLabels": [
+            "zones_violation"
+        ]
+    },
+    {
+        "id": "48638c6.a4ec474",
+        "type": "change",
+        "z": "e6b0a445.412a38",
+        "name": "outputs_state command",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "outputs_state",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 270,
+        "y": 160,
+        "wires": [
+            [
+                "676de317.d5b64c"
+            ]
+        ]
+    },
+    {
+        "id": "30c88e9.8160bf2",
+        "type": "change",
+        "z": "e6b0a445.412a38",
+        "name": "Set output 17 state",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"on\": msg.payload[16]}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 550,
+        "y": 260,
+        "wires": [
+            [
+                "a46a34c3.7b7308"
+            ]
+        ]
+    },
+    {
+        "id": "a46a34c3.7b7308",
+        "type": "rbe",
+        "z": "e6b0a445.412a38",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "property": "payload",
+        "x": 710,
+        "y": 260,
+        "wires": [
+            [
+                "35225d1b.22989a"
+            ]
+        ]
+    },
+    {
+        "id": "35225d1b.22989a",
+        "type": "debug",
+        "z": "e6b0a445.412a38",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "6f403932.107f18",
+        "type": "comment",
+        "z": "e6b0a445.412a38",
+        "name": "",
+        "info": "# Set output and get its state\n\nThis example flow provides two inject nodes by means of which the user can switch on or off **output 17**. Additionally, *new_data* command is injected every second to detect any change in the system. When it detects a change in outputs state, it sends *outputs_state* command to get current outputs state. If the state of the **output 17** has changed, a message with the current state of the output is being sent to the debug node.\n\n**Note**: The Integra system indexes zones, outputs, partitions, etc. starting from index 1, so all indices in message arrays are shifted by -1 (i.e. `index in the array` == `Integra index - 1`).\n\n**Note**: Every command changing the system state requires authorization. Therefore, the encode node has the **User** field set to *My_user* configuration node. In order to make the example work in user's system, the user has to set valid user code in the **Code** filed of the **My_user** configuration node.\n",
+        "x": 600,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "6b000e69.9e1fc8",
+        "type": "inject",
+        "z": "e6b0a445.412a38",
+        "name": "Switch on",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "outputs_on",
+        "x": 140,
+        "y": 240,
+        "wires": [
+            [
+                "1ec760f3.c1c5b7"
+            ]
+        ]
+    },
+    {
+        "id": "1f0e86b.24ae5f9",
+        "type": "inject",
+        "z": "e6b0a445.412a38",
+        "name": "Switch off",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "outputs_off",
+        "x": 140,
+        "y": 280,
+        "wires": [
+            [
+                "1ec760f3.c1c5b7"
+            ]
+        ]
+    },
+    {
+        "id": "1ec760f3.c1c5b7",
+        "type": "function",
+        "z": "e6b0a445.412a38",
+        "name": "Set output 17",
+        "func": "msg.outputs = new Array(128).fill(false);\nmsg.outputs[16] = true;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 310,
+        "y": 240,
+        "wires": [
+            [
+                "676de317.d5b64c"
+            ]
+        ]
+    },
+    {
+        "id": "2c6f5b4e.dc1a8c",
+        "type": "satel-integra-user",
+        "z": "",
+        "name": "My_user"
+    }
+]

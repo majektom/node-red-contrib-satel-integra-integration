@@ -1,0 +1,237 @@
+[
+    {
+        "id": "9af0b26d.281a98",
+        "type": "tab",
+        "label": "Zone violation state example",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "7bc5c9d4.c377d",
+        "type": "satel-integra-encoder",
+        "z": "9af0b26d.281a98",
+        "name": "Encode",
+        "user": "",
+        "prefix": "",
+        "x": 420,
+        "y": 160,
+        "wires": [
+            [
+                "8c9cad45.4f9e88"
+            ]
+        ]
+    },
+    {
+        "id": "fb75d997.1416e",
+        "type": "satel-integra-decoder",
+        "z": "9af0b26d.281a98",
+        "name": "Decode",
+        "x": 800,
+        "y": 160,
+        "wires": [
+            [
+                "afb1ba41.f786"
+            ]
+        ]
+    },
+    {
+        "id": "8c9cad45.4f9e88",
+        "type": "satel-integra-connection",
+        "z": "9af0b26d.281a98",
+        "name": "",
+        "server_address": "10.0.0.10",
+        "server_port": "7094",
+        "encryption": false,
+        "max_message_queue_size": "128",
+        "x": 610,
+        "y": 160,
+        "wires": [
+            [
+                "fb75d997.1416e"
+            ]
+        ]
+    },
+    {
+        "id": "468ae8ba.8c958",
+        "type": "inject",
+        "z": "9af0b26d.281a98",
+        "name": "new_data command",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "5",
+        "topic": "new_data",
+        "x": 220,
+        "y": 180,
+        "wires": [
+            [
+                "7bc5c9d4.c377d"
+            ]
+        ]
+    },
+    {
+        "id": "afb1ba41.f786",
+        "type": "switch",
+        "z": "9af0b26d.281a98",
+        "name": "Answer switch",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "new_data",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "zones_violation",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 960,
+        "y": 160,
+        "wires": [
+            [
+                "acd13d11.baba6"
+            ],
+            [
+                "3cdc6648.688c72"
+            ]
+        ]
+    },
+    {
+        "id": "acd13d11.baba6",
+        "type": "switch",
+        "z": "9af0b26d.281a98",
+        "name": "new_data switch",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "jsonata_exp",
+                "v": "payload[0]",
+                "vt": "jsonata"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 560,
+        "y": 80,
+        "wires": [
+            [
+                "55d578b9.376a58"
+            ]
+        ],
+        "outputLabels": [
+            "zones_violation"
+        ]
+    },
+    {
+        "id": "55d578b9.376a58",
+        "type": "change",
+        "z": "9af0b26d.281a98",
+        "name": "zones_violation command",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "zones_violation",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 210,
+        "y": 140,
+        "wires": [
+            [
+                "7bc5c9d4.c377d"
+            ]
+        ]
+    },
+    {
+        "id": "3cdc6648.688c72",
+        "type": "change",
+        "z": "9af0b26d.281a98",
+        "name": "Set violation (zone_10)",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"violated\": msg.payload[9]}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 240,
+        "wires": [
+            [
+                "f6b617e9.f983a8"
+            ]
+        ]
+    },
+    {
+        "id": "f6b617e9.f983a8",
+        "type": "rbe",
+        "z": "9af0b26d.281a98",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "property": "payload",
+        "x": 650,
+        "y": 240,
+        "wires": [
+            [
+                "19746468.4e91fc"
+            ]
+        ]
+    },
+    {
+        "id": "19746468.4e91fc",
+        "type": "debug",
+        "z": "9af0b26d.281a98",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "f0ae6b9d.9dc71",
+        "type": "comment",
+        "z": "9af0b26d.281a98",
+        "name": "",
+        "info": "# Zone's violation state\n\nThis example flow injects *new_data* command every second to detect any change in the system. When it detects a change in zones violation state, it sends *zones_violation* command to get current zones violation state. If the violation state of the **zone 10** has changed, a message with the current state of the zone is being sent to the debug node.\n\n**Note**: The Integra system indexes zones, outputs, partitions, etc. starting from index 1, so all indices in message arrays are shifted by -1 (i.e. `index in the array` == `Integra index - 1`).\n",
+        "x": 560,
+        "y": 40,
+        "wires": []
+    }
+]
