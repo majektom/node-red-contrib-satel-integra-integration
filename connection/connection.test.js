@@ -868,6 +868,94 @@ describe("satel-integra-connection Node", function () {
     });
   });
 
+  it("should discard old pending 'new_data' command on receiving a new one", function () {
+    return new Promise(function (resolve, reject) {
+      const nameValue = "Connection";
+      const serverAddressValue = "192.168.0.1";
+      const serverPortValue = "1234";
+      const encryptionKeyValue = "09876";
+      const flow = [
+        { id: "f1", type: "tab", label: "Test flow" },
+        {
+          id: "connection1",
+          z: "f1",
+          type: "satel-integra-connection",
+          name: nameValue,
+          server_address: serverAddressValue,
+          server_port: serverPortValue,
+          encryption: false,
+          max_message_queue_size: "1",
+          wires: [["helper1"]],
+        },
+        { id: "helper1", z: "f1", type: "helper" },
+        { id: "helper2", z: "f1", type: "helper" },
+        { id: "helper3", z: "f1", type: "helper" },
+        { id: "catch1", z: "f1", type: "catch", wires: [["helper2"]] },
+        {
+          id: "complete1",
+          z: "f1",
+          type: "complete",
+          scope: ["connection1"],
+          wires: [["helper3"]],
+        },
+      ];
+      const credentials = {
+        connection1: { encryption_key: encryptionKeyValue },
+      };
+      const message1 = Buffer.from([0x01, 0x02, 0x03]);
+      const message2 = message1.map(function (value) {
+        return value + 1;
+      });
+      let doneMessages = 0;
+      const mockSocket = createMockSocket(function (buffer) {
+        mockSocket.data_callback(buffer);
+      });
+      sinon.replace(
+        net,
+        "createConnection",
+        sinon.fake(function (port, address) {
+          port.should.be.equal(parseInt(serverPortValue, 10));
+          address.should.be.equal(serverAddressValue);
+          return mockSocket;
+        })
+      );
+      helper.load(
+        [connection, catchNode, completeNode],
+        flow,
+        credentials,
+        function () {
+          const connectionNode = helper.getNode("connection1");
+          const helperNode1 = helper.getNode("helper1");
+          const helperNode2 = helper.getNode("helper2");
+          const helperNode3 = helper.getNode("helper3");
+          helperNode1.on("input", function (msg) {
+            msg.should.have.property("topic", "new_data");
+            msg.should.have.property("payload", message2);
+            resolve();
+          });
+          helperNode2.on("input", function (msg) {
+            reject(
+              new Error(
+                "error has been issued in the flow: " + msg.error.message
+              )
+            );
+          });
+          helperNode3.on("input", function (msg) {
+            ++doneMessages;
+            msg.should.have.property("topic", "new_data");
+            if (doneMessages == 1) {
+              msg.should.have.property("payload", message1);
+            } else {
+              msg.should.have.property("payload", message2);
+            }
+          });
+          connectionNode.receive({ topic: "new_data", payload: message1 });
+          connectionNode.receive({ topic: "new_data", payload: message2 });
+        }
+      );
+    });
+  });
+
   it("should encrypt and decrypt message in encrypted mode", function () {
     return new Promise(function (resolve, reject) {
       const nameValue = "Connection";

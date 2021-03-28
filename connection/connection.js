@@ -33,6 +33,17 @@ function sendNextMessage(node) {
 }
 
 function addMessageToQueue(node, message, send, done) {
+  if (message.topic == "new_data") {
+    const new_data_message = node.messageQueue.find(function (item) {
+      return item.message.topic == "new_data";
+    });
+    if (new_data_message) {
+      new_data_message.done();
+      node.messageQueue = node.messageQueue.filter(function (item) {
+        return item.message.topic != "new_data";
+      });
+    }
+  }
   if (node.messageQueue.length >= node.maxMessageQueueSize) {
     const message = node.messageQueue.shift();
     node.warn(
