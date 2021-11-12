@@ -16,24 +16,44 @@ module.exports = function (RED) {
           msg.payload = protocol.encodeNewDataCommand();
         } else if (msg.topic == "outputs_state") {
           msg.payload = protocol.encodeOutputsStateCommand();
+        } else if (msg.topic == "outputs_state_256") {
+          msg.payload = protocol.encodeOutputsState256Command();
         } else if (msg.topic == "zones_tamper") {
           msg.payload = protocol.encodeZonesTamperCommand();
+        } else if (msg.topic == "zones_tamper_256") {
+          msg.payload = protocol.encodeZonesTamper256Command();
         } else if (msg.topic == "zones_violation") {
           msg.payload = protocol.encodeZonesViolationCommand();
+        } else if (msg.topic == "zones_violation_256") {
+          msg.payload = protocol.encodeZonesViolation256Command();
         } else if (msg.topic == "zones_alarm") {
           msg.payload = protocol.encodeZonesAlarmCommand();
+        } else if (msg.topic == "zones_alarm_256") {
+          msg.payload = protocol.encodeZonesAlarm256Command();
         } else if (msg.topic == "zones_tamper_alarm") {
           msg.payload = protocol.encodeZonesTamperAlarmCommand();
+        } else if (msg.topic == "zones_tamper_alarm_256") {
+          msg.payload = protocol.encodeZonesTamperAlarm256Command();
         } else if (msg.topic == "zones_alarm_memory") {
           msg.payload = protocol.encodeZonesAlarmMemoryCommand();
+        } else if (msg.topic == "zones_alarm_memory_256") {
+          msg.payload = protocol.encodeZonesAlarmMemory256Command();
         } else if (msg.topic == "zones_tamper_alarm_memory") {
           msg.payload = protocol.encodeZonesTamperAlarmMemoryCommand();
+        } else if (msg.topic == "zones_tamper_alarm_memory_256") {
+          msg.payload = protocol.encodeZonesTamperAlarmMemory256Command();
         } else if (msg.topic == "zones_bypass_status") {
           msg.payload = protocol.encodeZonesBypassStatusCommand();
+        } else if (msg.topic == "zones_bypass_status_256") {
+          msg.payload = protocol.encodeZonesBypassStatus256Command();
         } else if (msg.topic == "zones_no_violation_trouble") {
           msg.payload = protocol.encodeZonesNoViolationTroubleCommand();
+        } else if (msg.topic == "zones_no_violation_trouble_256") {
+          msg.payload = protocol.encodeZonesNoViolationTrouble256Command();
         } else if (msg.topic == "zones_long_violation_trouble") {
           msg.payload = protocol.encodeZonesLongViolationTroubleCommand();
+        } else if (msg.topic == "zones_long_violation_trouble_256") {
+          msg.payload = protocol.encodeZonesLongViolationTrouble256Command();
         } else if (msg.topic == "armed_partitions_suppressed") {
           msg.payload = protocol.encodeArmedPartitionsSuppressedCommand();
         } else if (msg.topic == "armed_partitions_really") {
@@ -64,10 +84,16 @@ module.exports = function (RED) {
           msg.payload = protocol.encodePartitionsFireAlarmMemoryCommand();
         } else if (msg.topic == "zones_isolate_state") {
           msg.payload = protocol.encodeZonesIsolateStateCommand();
+        } else if (msg.topic == "zones_isolate_state_256") {
+          msg.payload = protocol.encodeZonesIsolateState256Command();
         } else if (msg.topic == "zones_masked") {
           msg.payload = protocol.encodeZonesMaskedCommand();
+        } else if (msg.topic == "zones_masked_256") {
+          msg.payload = protocol.encodeZonesMasked256Command();
         } else if (msg.topic == "zones_masked_memory") {
           msg.payload = protocol.encodeZonesMaskedMemoryCommand();
+        } else if (msg.topic == "zones_masked_memory_256") {
+          msg.payload = protocol.encodeZonesMaskedMemory256Command();
         } else if (msg.topic == "outputs_off") {
           impl.encodeOutputsChangeCommand(
             msg,

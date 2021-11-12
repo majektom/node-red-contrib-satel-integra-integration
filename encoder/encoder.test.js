@@ -174,40 +174,80 @@ describe("satel-integra-encoder Node", function () {
       expectedPayload: protocol.encodeOutputsStateCommand(),
     },
     {
+      commandName: "outputs_state_256",
+      expectedPayload: protocol.encodeOutputsState256Command(),
+    },
+    {
       commandName: "zones_tamper",
       expectedPayload: protocol.encodeZonesTamperCommand(),
+    },
+    {
+      commandName: "zones_tamper_256",
+      expectedPayload: protocol.encodeZonesTamper256Command(),
     },
     {
       commandName: "zones_violation",
       expectedPayload: protocol.encodeZonesViolationCommand(),
     },
     {
+      commandName: "zones_violation_256",
+      expectedPayload: protocol.encodeZonesViolation256Command(),
+    },
+    {
       commandName: "zones_alarm",
       expectedPayload: protocol.encodeZonesAlarmCommand(),
+    },
+    {
+      commandName: "zones_alarm_256",
+      expectedPayload: protocol.encodeZonesAlarm256Command(),
     },
     {
       commandName: "zones_tamper_alarm",
       expectedPayload: protocol.encodeZonesTamperAlarmCommand(),
     },
     {
+      commandName: "zones_tamper_alarm_256",
+      expectedPayload: protocol.encodeZonesTamperAlarm256Command(),
+    },
+    {
       commandName: "zones_alarm_memory",
       expectedPayload: protocol.encodeZonesAlarmMemoryCommand(),
+    },
+    {
+      commandName: "zones_alarm_memory_256",
+      expectedPayload: protocol.encodeZonesAlarmMemory256Command(),
     },
     {
       commandName: "zones_tamper_alarm_memory",
       expectedPayload: protocol.encodeZonesTamperAlarmMemoryCommand(),
     },
     {
+      commandName: "zones_tamper_alarm_memory_256",
+      expectedPayload: protocol.encodeZonesTamperAlarmMemory256Command(),
+    },
+    {
       commandName: "zones_bypass_status",
       expectedPayload: protocol.encodeZonesBypassStatusCommand(),
+    },
+    {
+      commandName: "zones_bypass_status_256",
+      expectedPayload: protocol.encodeZonesBypassStatus256Command(),
     },
     {
       commandName: "zones_no_violation_trouble",
       expectedPayload: protocol.encodeZonesNoViolationTroubleCommand(),
     },
     {
+      commandName: "zones_no_violation_trouble_256",
+      expectedPayload: protocol.encodeZonesNoViolationTrouble256Command(),
+    },
+    {
       commandName: "zones_long_violation_trouble",
       expectedPayload: protocol.encodeZonesLongViolationTroubleCommand(),
+    },
+    {
+      commandName: "zones_long_violation_trouble_256",
+      expectedPayload: protocol.encodeZonesLongViolationTrouble256Command(),
     },
     {
       commandName: "armed_partitions_suppressed",
@@ -270,12 +310,24 @@ describe("satel-integra-encoder Node", function () {
       expectedPayload: protocol.encodeZonesIsolateStateCommand(),
     },
     {
+      commandName: "zones_isolate_state_256",
+      expectedPayload: protocol.encodeZonesIsolateState256Command(),
+    },
+    {
       commandName: "zones_masked",
       expectedPayload: protocol.encodeZonesMaskedCommand(),
     },
     {
+      commandName: "zones_masked_256",
+      expectedPayload: protocol.encodeZonesMasked256Command(),
+    },
+    {
       commandName: "zones_masked_memory",
       expectedPayload: protocol.encodeZonesMaskedMemoryCommand(),
+    },
+    {
+      commandName: "zones_masked_memory_256",
+      expectedPayload: protocol.encodeZonesMaskedMemory256Command(),
     },
   ];
   encodeNoDataCommandTests.forEach(function (test) {

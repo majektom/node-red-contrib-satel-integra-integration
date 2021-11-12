@@ -59,40 +59,67 @@
     The supported message types are:
     <ul>
       <li>
-        <dfn>Zones violation command [0x00]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_violation</b>.
+        <dfn>Zones violation command [0x00]</dfn> - <code>msg.topic</code> must be set to either
+        <b>zones_violation</b> or <b>zones_violation_256</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 zones instead of the first 128 zones. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
-        <dfn>Zones tamper command [0x01]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_tamper</b>.
+        <dfn>Zones tamper command [0x01]</dfn> - <code>msg.topic</code> must be set to either
+        <b>zones_tamper</b> or <b>zones_tamper_256</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 zones instead of the first 128 zones. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
-        <dfn>Zones alarm command [0x02]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_alarm</b>.
+        <dfn>Zones alarm command [0x02]</dfn> - <code>msg.topic</code> must be set to either
+        <b>zones_alarm</b> or <b>zones_alarm_256</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 zones instead of the first 128 zones. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
-        <dfn>Zones tamper alarm command [0x03]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_tamper_alarm</b>.
+        <dfn>Zones tamper alarm command [0x03]</dfn> - <code>msg.topic</code> must be set to either
+        <b>zones_tamper_alarm</b> or <b>zones_tamper_alarm_256</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 zones instead of the first 128 zones. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
-        <dfn>Zones alarm memory command [0x04]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_alarm_memory</b>.
+        <dfn>Zones alarm memory command [0x04]</dfn> - <code>msg.topic</code> must be set to either
+        <b>zones_alarm_memory</b> or <b>zones_alarm_memory</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 zones instead of the first 128 zones. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
         <dfn>Zones tamper alarm memory command [0x05]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_tamper_alarm_memory</b>.
+        either <b>zones_tamper_alarm_memory</b> or <b>zones_tamper_alarm_memory_256</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 zones instead of the first 128 zones. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
-        <dfn>Zones bypass status command [0x06]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_bypass_status</b>.
+        <dfn>Zones bypass status command [0x06]</dfn> - <code>msg.topic</code> must be set to either
+        <b>zones_bypass_status</b> or <b>zones_bypass_status_256</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 zones instead of the first 128 zones. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
         <dfn>Zones no violation trouble command [0x07]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_no_violation_trouble</b>.
+        either <b>zones_no_violation_trouble</b> or <b>zones_no_violation_trouble_256</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 zones instead of the first 128 zones. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
         <dfn>Zones long violation trouble command [0x08]</dfn> - <code>msg.topic</code> must be set
-        to <b>zones_long_violation_trouble</b>.
+        to either <b>zones_long_violation_trouble</b> or <b>zones_long_violation_trouble_256</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 zones instead of the first 128 zones. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
         <dfn>Armed partitions suppressed command [0x09]</dfn> - <code>msg.topic</code> must be set
@@ -151,20 +178,32 @@
         to <b>partitions_fire_alarm_memory</b>.
       </li>
       <li>
-        <dfn>Outputs state command [0x17]</dfn> - <code>msg.topic</code> must be set to
-        <b>outputs_state</b>.
+        <dfn>Outputs state command [0x17]</dfn> - <code>msg.topic</code> must be set to either
+        <b>outputs_state</b> or <b>outputs_state_256</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 outputs instead of the first 128 outputs. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
-        <dfn>Zones isolate state command [0x26]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_isolate_state</b>.
+        <dfn>Zones isolate state command [0x26]</dfn> - <code>msg.topic</code> must be set to either
+        <b>zones_isolate_state</b> or <b>zones_isolate_state_256</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 zones instead of the first 128 zones. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
-        <dfn>Zones masked command [0x28]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_masked</b>.
+        <dfn>Zones masked command [0x28]</dfn> - <code>msg.topic</code> must be set to either
+        <b>zones_masked</b> or <b>zones_masked_256</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 zones instead of the first 128 zones. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
-        <dfn>Zones masked memory command [0x29]</dfn> - <code>msg.topic</code> must be set to
-        <b>zones_masked_memory</b>.
+        <dfn>Zones masked memory command [0x29]</dfn> - <code>msg.topic</code> must be set to either
+        <b>zones_masked_memory</b> or <b>zones_masked_memory_256</b>.
+        In the latter case, the command will make the Satel Integra device report state of the first
+        256 zones instead of the first 128 zones. Use this option only if you are sure that your
+        device supports this mode.
       </li>
       <li>
         <dfn>New data command [0x7F]</dfn> - <code>msg.topic</code> must be set to <b>new_data</b>.
